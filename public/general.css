@@ -1,0 +1,195 @@
+:root {
+  --black: #000000;
+  --font-dark: #2e130a;
+  --primary: #f45727;
+  --bg: #f7f1e9;
+  --white: #ffffff;
+  --green: #0bb677;
+}
+
+/* Example usage */
+body {
+  background-color: var(--bg);
+  color: var(--font-dark);
+}
+
+.nav-link:hover {
+  color: var(--primary);
+}
+
+/* General resets */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: "ClashDisplay", sans-serif;
+  background-color: #f7f1e9;
+  color: #2e130a;
+  line-height: 1.5;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  flex-direction: column;
+}
+
+.flex {
+  display: flex;
+}
+
+.gap-3 {
+  gap: 3rem;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-weight: 600;
+}
+
+h2 {
+  font-size: 2.5rem;
+  font-weight: 500;
+}
+
+h3 {
+  font-size: 1.7rem;
+  font-weight: 500;
+}
+
+h4 {
+  font-size: 1.2rem;
+  font-weight: 500;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+button {
+  cursor: pointer;
+  border: none;
+  outline: none;
+  font-family: "ClashDisplay", sans-serif;
+  font-size: 1rem;
+}
+
+/* Basic container for centering content */
+.container {
+  width: 100%;
+  max-width: 1200px;
+  padding: 20px;
+  margin: 0 auto;
+}
+
+section {
+  width: 100%;
+}
+
+.hero h1 {
+  font-size: 4rem;
+  color: var(--black);
+  margin-bottom: 20px;
+}
+
+.hero p {
+  font-size: 1.875rem;
+  color: #555;
+}
+
+.hero .cta-button:hover {
+  background-color: var(--primary);
+}
+
+.btn-full {
+  background-color: var(--primary);
+  color: white;
+  margin: 0 10px;
+  padding: 10px 24px;
+  font-size: 1rem;
+  text-decoration: none;
+  border-radius: 40px;
+  font-weight: 300;
+}
+
+.btn-stroke {
+  border: 1px solid var(--primary);
+  color: var(--primary);
+  padding: 10px 24px;
+  font-size: 1rem;
+  text-decoration: none;
+  border-radius: 40px;
+}
+
+.btn-big {
+  padding: 15px 100px;
+}
+
+.btn-full:hover {
+  background-color: #be3b2f;
+}
+
+.btn-stroke:hover {
+  background-color: #f1bcb7;
+}
+
+/* Footer styles */
+footer {
+  background-color: #222;
+  color: var(--white);
+  text-align: center;
+  padding: 20px;
+  width: 100%;
+}
+
+footer a {
+  color: var(--primary);
+  text-decoration: none;
+}
+
+footer a:hover {
+  color: var(--white);
+}
+
+/* Define the custom font */
+@font-face {
+  font-family: "ClashDisplay";
+  src: url("../assets/fonts/ClashDisplay/ClashDisplay-Regular.otf")
+      format("opentype"),
+    url("../assets/fonts/ClashDisplay/ClashDisplay-Regular.ttf")
+      format("truetype");
+  font-weight: normal;
+  font-style: normal;
+}
+
+/* You can add other font weights and styles if needed */
+@font-face {
+  font-family: "ClashDisplay";
+  src: url("../assets/fonts/ClashDisplay/ClashDisplay-Bold.otf")
+      format("opentype"),
+    url("../assets/fonts/ClashDisplay/ClashDisplay-Bold.ttf") format("truetype");
+  font-weight: bold;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "ClashDisplay";
+  src: url("../assets/fonts/ClashDisplay/ClashDisplay-Semibold.otf")
+      format("opentype"),
+    url("../assets/fonts/ClashDisplay/ClashDisplay-Semibold.ttf")
+      format("truetype");
+  font-weight: 600;
+  font-style: normal;
+}
+
+/* Use the font globally */
+body {
+  font-family: "ClashDisplay", sans-serif;
+}

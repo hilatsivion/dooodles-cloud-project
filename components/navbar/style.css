@@ -1,0 +1,39 @@
+#navbar-container {
+  width: 100%;
+  position: sticky;
+  top: 0;
+  background-color: var(--bg);
+  z-index: 2;
+  font-family: "ClashDisplay", sans-serif;
+}
+
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 26px 60px;
+  background-color: var(--bg);
+  box-shadow: 0 2px 4px rgba(60, 60, 58, 0.1);
+  width: 100%;
+  color: var(--black);
+}
+
+.logo {
+  font-size: 2rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.nav-links {
+  display: flex;
+}
+
+.nav-link {
+  margin: 0 15px;
+  font-size: 1.1rem;
+  text-decoration: none;
+}
+
+.nav-link:hover {
+  color: var(--primary); /* Orange color on hover */
+}

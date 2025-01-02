@@ -1,0 +1,177 @@
+h1.title-hero {
+  font-size: 8rem;
+  line-height: 6rem;
+  margin: 0;
+}
+
+.hero {
+  overflow-x: clip;
+}
+
+section {
+  height: 90vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  text-align: center;
+  line-height: normal;
+  position: relative;
+}
+
+.hero {
+  text-align: center;
+  padding: 0 20px;
+  position: relative;
+  gap: 20px;
+}
+
+.cta-section {
+  gap: 20px;
+}
+
+.illustration {
+  user-select: none;
+}
+
+.img-baloon {
+  position: absolute;
+  top: 3rem;
+  left: 0rem;
+}
+
+.img-doodle {
+  position: absolute;
+  top: -6rem;
+  left: 30vw;
+}
+
+.img-stars {
+  position: absolute;
+  top: 0rem;
+  left: 70vw;
+}
+
+.img-dimond {
+  position: absolute;
+  top: 14rem;
+  left: 86vw;
+  z-index: 1;
+}
+
+.img-yellow {
+  position: absolute;
+  bottom: -10vh;
+  right: -40vh;
+}
+
+.img-blue {
+  position: absolute;
+  bottom: -30vh;
+  left: -20vw;
+}
+
+.img-smile {
+  position: absolute;
+  bottom: 20vh;
+  left: 10vw;
+}
+
+.img-squiggle {
+  position: absolute;
+  bottom: -20vh;
+  right: 60vw;
+}
+
+.img-rainbow {
+  position: absolute;
+  bottom: -10vh;
+  right: 20vw;
+}
+
+.img-green {
+  position: absolute;
+  bottom: -10vh;
+  left: -10vw;
+}
+
+.img-cube {
+  position: absolute;
+  bottom: 15vh;
+  left: 10vw;
+}
+
+.img-baloon-2 {
+  position: absolute;
+  bottom: 15vh;
+  right: 10vw;
+}
+
+.img-eyes {
+  position: absolute;
+  top: 10vh;
+  right: 10vw;
+}
+
+.footer {
+  background-color: var(--green);
+  color: var(--bg);
+  padding: 12rem 20px;
+  font-size: 1.8rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+.footer div {
+  justify-content: center;
+}
+
+.footer-content {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+/* Initial state for the sections */
+.fade-in-section {
+  opacity: 0;
+  transform: translateY(100px); /* Start from 50px below */
+  transition: opacity 1.5s ease, transform 1.5s ease;
+}
+
+/* Final state when the section is in view */
+.fade-in-section.visible {
+  opacity: 1;
+  transform: translateY(0); /* Move to the normal position */
+}
+/* Initial state for images */
+.illustration {
+  opacity: 0;
+  transform: scale(0.5); /* Start with smaller size */
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+
+/* Final state when the image is in view */
+.illustration.visible {
+  opacity: 1;
+  transform: scale(1); /* Return to normal size */
+}
+
+/* Optional: Add a pop effect on hover */
+.illustration:hover {
+  animation: pop 0.3s ease-out;
+}
+
+@keyframes pop {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.2); /* Slightly larger */
+  }
+  100% {
+    transform: scale(1); /* Back to normal size */
+  }
+}
