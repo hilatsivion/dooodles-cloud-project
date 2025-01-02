@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="shortcut icon" href="#" />
+    <title>Dooodles</title>
+    <link rel="stylesheet" href="../../public/general.css" />
+    <link rel="stylesheet" href="../../components/navbar/style.css" />
+    <link rel="stylesheet" href="./style.css" />
+    <link rel="stylesheet" href="./canvas.css" />
+  </head>
+  <body>
+    <!-- Navbar -->
+    <div id="navbar-container"></div>
+
+    <!-- Start Drawing - screen 1 -->
+    <section class="pre-start-drawing">
+      <div class="flex-col-center">
+        <p class="title-challenge">Daily challenge:</p>
+        <p class="challenge-name" id="challenge-name">Sample Sample</p>
+      </div>
+      <div class="flex-col-center">
+        <h1 class="ready-text">Ready?</h1>
+        <button class="play-btn" id="start-button">
+          <img src="../../assets/images/play-btn.svg" alt="play-btn" />
+        </button>
+        <p class="instruction">Press play to start drawing!</p>
+      </div>
+    </section>
+
+    <!-- Start Drawing - screen 2 -->
+    <section class="drawing">
+      <h1 class="ready-text">Sample Sample</h1>
+
+      <!--  -->
+      <!--  -->
+      <!--  -->
+      <!-- enter the canvas and the canvas bar here -->
+      <canvas id="canvas"></canvas>
+      <!--  -->
+      <!--  -->
+      <!--  -->
+    </section>
+
+    <script src="../../components/navbar/index.js"></script>
+    <script src="drawing.js"></script>
+  </body>
+</html>
