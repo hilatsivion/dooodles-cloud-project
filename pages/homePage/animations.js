@@ -22,7 +22,7 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 });
 
-// Illustration animation - Pop effect
+// Illustration animation - Pop effect with random delay
 document.addEventListener("DOMContentLoaded", () => {
   const images = document.querySelectorAll(".illustration");
 
@@ -35,9 +35,12 @@ document.addEventListener("DOMContentLoaded", () => {
   const observer = new IntersectionObserver((entries, observer) => {
     entries.forEach((entry) => {
       if (entry.isIntersecting) {
-        entry.target.classList.add("visible");
-        // No need for a separate class like scale-rotate, just add pop effect in CSS
-        observer.unobserve(entry.target);
+        // Apply random delay for each image
+        const randomDelay = Math.random() * 1.2; // Random delay between 0 and 3 seconds
+        entry.target.style.transitionDelay = `${randomDelay}s`; // Apply the delay to the transition
+
+        entry.target.classList.add("visible"); // Trigger visibility
+        observer.unobserve(entry.target); // Stop observing once it's in view
       }
     });
   }, options);

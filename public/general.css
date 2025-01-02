@@ -7,33 +7,28 @@
   --green: #0bb677;
 }
 
-/* Example usage */
-body {
-  background-color: var(--bg);
-  color: var(--font-dark);
-}
-
 .nav-link:hover {
   color: var(--primary);
 }
 
-/* General resets */
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+  cursor: url("../assets/images/cursor.svg"), auto !important;
 }
 
 body {
   font-family: "ClashDisplay", sans-serif;
   background-color: #f7f1e9;
-  color: #2e130a;
   line-height: 1.5;
   display: flex;
   justify-content: center;
   align-items: center;
   min-height: 100vh;
   flex-direction: column;
+  background-color: var(--bg);
+  color: var(--font-dark);
 }
 
 .flex {

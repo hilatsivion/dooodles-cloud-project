@@ -28,6 +28,7 @@ section {
 
 .cta-section {
   gap: 20px;
+  padding-bottom: 11vh;
 }
 
 .illustration {
@@ -67,19 +68,19 @@ section {
 
 .img-blue {
   position: absolute;
-  bottom: -30vh;
-  left: -20vw;
+  bottom: -20vh;
+  left: -15vw;
 }
 
 .img-smile {
   position: absolute;
-  bottom: 20vh;
+  bottom: 25vh;
   left: 10vw;
 }
 
 .img-squiggle {
   position: absolute;
-  bottom: -20vh;
+  top: 5vh;
   right: 60vw;
 }
 
@@ -146,6 +147,7 @@ section {
   opacity: 1;
   transform: translateY(0); /* Move to the normal position */
 }
+
 /* Initial state for images */
 .illustration {
   opacity: 0;
