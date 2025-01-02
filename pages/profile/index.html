@@ -3,10 +3,10 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>User Profile - Doooodles</title>
-    <link rel="stylesheet" href="../../public/index.html" />
+    <title>Dooodles</title>
+    <link rel="stylesheet" href="../../public/general.css" />
     <link rel="stylesheet" href="../../components/navbar/style.css" />
-    <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="./style.css" />
   </head>
   <body>
     <!-- Navbar -->
@@ -15,13 +15,14 @@
     <!-- Profile Section -->
     <section class="profile">
       <div class="profile-header">
-        <h1 id="username">User123</h1>
-        <p id="user-points">53 <span class="diamond">💎</span></p>
+        <div class="container-info-user">
+          <h1 id="username">User123</h1>
+          <p id="user-points">53 <span class="diamond">💎</span></p>
+        </div>
       </div>
 
       <!-- Doodles Gallery -->
       <div class="doodles-gallery">
-        <h2>Your Doodles</h2>
         <div class="doodle-cards" id="doodle-cards-container">
           <!-- Doodles will be dynamically injected here -->
         </div>
