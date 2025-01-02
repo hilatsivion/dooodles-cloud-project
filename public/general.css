@@ -15,7 +15,6 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  cursor: url("../assets/images/cursor.svg"), auto !important;
 }
 
 body {
@@ -184,7 +183,16 @@ footer a:hover {
   font-style: normal;
 }
 
-/* Use the font globally */
-body {
-  font-family: "ClashDisplay", sans-serif;
+* {
+  cursor: url("../assets/images/cursor.svg"), auto !important;
+}
+
+/* cursor For buttons */
+button:hover {
+  cursor: url("../assets/button-cursor.svg"), pointer;
+}
+
+/* cursor For links */
+a:hover {
+  cursor: url("../assets/link-cursor.svg"), pointer;
 }
