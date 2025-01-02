@@ -5,10 +5,9 @@
 }
 
 h1 {
-  font-size: 3rem;
-  font-weight: bold;
+  font-size: 4rem;
+  font-weight: 600;
   text-align: center;
-  margin-bottom: 20px;
 }
 
 p {
@@ -30,37 +29,63 @@ p {
   width: 100%;
   max-width: 600px;
   margin-bottom: 15px;
-  padding: 10px;
-  background-color: #fff;
-  border-radius: 25px;
-  border: 1px solid #ccc;
+  padding: 15px;
   font-size: 1.1rem;
+  font-weight: bold;
+  border-radius: 50px;
+  color: white;
+  cursor: pointer;
+  transition: all 0.3s ease-in-out;
+  gap: 10px;
 }
 
-.leaderboard-item .rank {
-  background-color: #8e44ad;
-  color: white;
-  width: 40px;
-  height: 40px;
+.leaderboard-item .place {
+  width: 70px;
+  height: 70px;
   display: flex;
   align-items: center;
   justify-content: center;
   border-radius: 50%;
+  border: solid 4px;
+  font-size: 1.5rem;
+  box-shadow: 0 2px 10px rgba(84, 84, 72, 0.1);
 }
 
 .leaderboard-item .username {
   flex: 1;
   text-align: center;
-  font-weight: bold;
+  background: var(--white);
+  color: var(--font-dark);
+  padding: 1rem;
+  border-radius: 50px;
+  font-weight: 500;
+  font-size: 1.5rem;
 }
 
-.leaderboard-item .score {
-  background-color: #2ecc71;
-  color: white;
-  width: 40px;
-  height: 40px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 50%;
+.leaderboard-item:nth-child(1) .place {
+  background: linear-gradient(135deg, #9b59b6, #8e44ad); /* Purple */
+  background-size: 200% 200%;
+}
+
+.leaderboard-item:nth-child(2) .place {
+  background: linear-gradient(135deg, #3498db, #2980b9); /* Blue */
+}
+
+.leaderboard-item:nth-child(3) .place {
+  background: linear-gradient(135deg, #1abc9c, #16a085); /* Teal */
+}
+
+.leaderboard-item:nth-child(4) .place {
+  background: linear-gradient(135deg, #2ecc71, #27ae60); /* Green */
+}
+
+.leaderboard-item:nth-child(5) .place {
+  background: linear-gradient(135deg, #f39c12, #e67e22); /* Yellow */
+}
+
+/* On hover, we change the background slightly */
+.leaderboard-item:hover {
+  transform: scale(1.03);
+  background-color: rgb(255, 255, 255);
+  color: var(--font-dark);
 }
