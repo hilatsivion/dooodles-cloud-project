@@ -1,0 +1,95 @@
+/* Toolbar styling */
+.toolbar {
+  width: 1080px; 
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px;
+  background-color: #ffffff;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  margin-bottom: 10px; 
+  box-sizing: border-box; 
+  gap: 1%;
+}
+
+canvas {
+  display: block;
+  margin: 20px auto;
+  width: 1080px;
+  height: auto;
+  background-color: #ffffff;
+  border: 2px solid #ddd;
+  border-radius: 10px;
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+  cursor: crosshair;
+  box-sizing: border-box;
+}
+
+.brush {
+  padding: 8px 15px;
+  border: 2px solid #333;
+  border-radius: 5px;
+  background-color: #f1f1f1;
+  cursor: pointer;
+  font-weight: bold;
+  color: #333;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.brush.active,
+.brush:hover {
+  background-color: #4caf50;
+  color: white;
+  border-color: #4caf50;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+#brush-size {
+  width: 150px;
+}
+
+#eraser,
+#clear {
+  padding: 8px 15px;
+  border: 2px solid #ff5722;
+  border-radius: 5px;
+  background-color: #ffffff;
+  color: #ff5722;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+#eraser:hover,
+#clear:hover {
+  background-color: #ff5722;
+  color: white;
+}
+
+#color-picker {
+  width: 50px;
+  height: 30px;
+  border: none;
+  cursor: pointer;
+}
+
+#save {
+  padding: 8px 15px;
+  border: 2px solid #4caf50;
+  border-radius: 5px;
+  background-color: #ffffff;
+  color: #4caf50;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+#save:hover {
+  background-color: #4caf50;
+  color: white;
+}
