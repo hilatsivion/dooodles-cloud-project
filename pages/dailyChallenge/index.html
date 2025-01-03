@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="shortcut icon" href="#" />
-    <title>Daily Challenge - Doooodles</title>
+    <title>Dooodles</title>
     <link rel="stylesheet" href="../../public/general.css" />
     <link rel="stylesheet" href="../../components/navbar/style.css" />
     <link rel="stylesheet" href="./style.css" />
@@ -20,9 +20,52 @@
 
       <!-- Gallery of Drawings -->
       <div class="drawing-gallery">
-        <!-- Each drawing will be dynamically added here -->
+        <!-- Example drawing card -->
+        <div class="drawing-card">
+          <img
+            src="../../assets/images/doodle1.png"
+            alt="Drawing 1"
+            class="drawing-img"
+          />
+          <div class="username">User123</div>
+          <button class="rate-btn" data-img="../../assets/images/doodle1.png">
+            Rate
+          </button>
+        </div>
+        <!-- More drawing cards can be added here -->
       </div>
     </section>
+
+    <!-- Dark Overlay for Background when Popup is active -->
+    <div id="overlay" class="overlay"></div>
+
+    <!-- Popup for Rating -->
+    <div id="popup" class="popup">
+      <div class="popup-content">
+        <h2>Rate this Doodle</h2>
+        <img id="popup-img" src="" alt="Drawing" />
+        <p id="popup-challenge" class="popup-challenge">
+          Dog walks on the moon
+        </p>
+
+        <div class="slider-container">
+          <input
+            type="range"
+            id="rating-slider"
+            min="0"
+            max="10"
+            step="1"
+            value="0"
+          />
+          <p id="slider-value">0</p>
+        </div>
+
+        <div class="popup-buttons">
+          <button id="save-btn" class="popup-btn">Save</button>
+          <button id="cancel-btn" class="popup-btn">Cancel</button>
+        </div>
+      </div>
+    </div>
 
     <script src="../../components/navbar/index.js"></script>
     <script src="dailyChallenge.js"></script>

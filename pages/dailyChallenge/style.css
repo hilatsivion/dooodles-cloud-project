@@ -15,7 +15,7 @@
 
 .challenge-name {
   font-size: 2rem;
-  font-weight: bold;
+  font-weight: 600;
   color: var(--primary);
   text-align: center;
 }
@@ -68,4 +68,81 @@
 
 .drawing-card .rate-btn:hover {
   background-color: #a43516;
+}
+
+/* Overlay for Darkening Background */
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: none; /* Initially hidden */
+  z-index: 999; /* Ensure it's above other content */
+}
+
+/* Popup */
+.popup {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5); /* Dark background behind popup */
+  display: none; /* Initially hidden */
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.popup-content {
+  background-color: #fff;
+  padding: 30px;
+  border-radius: 10px;
+  text-align: center;
+  width: 300px;
+}
+
+#popup-img {
+  width: 100%;
+  height: auto;
+  margin-bottom: 20px;
+}
+
+.popup-challenge {
+  font-size: 1.2rem;
+  color: #2e130a;
+  margin-bottom: 20px;
+}
+
+.slider-container {
+  margin-bottom: 20px;
+}
+
+#rating-slider {
+  width: 100%;
+}
+
+#slider-value {
+  font-size: 1.2rem;
+  margin-top: 10px;
+}
+
+.popup-buttons {
+  display: flex;
+  justify-content: space-between;
+}
+
+.popup-btn {
+  background-color: var(--primary);
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 20px;
+  cursor: pointer;
+}
+
+.popup-btn:hover {
+  background-color: #a43516; /* Darker shade on hover */
 }
