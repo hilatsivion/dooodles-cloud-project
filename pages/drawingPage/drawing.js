@@ -134,18 +134,33 @@ document.addEventListener("DOMContentLoaded", () => {
     lastY = y;
   }
 
-  function saveDrawing(name) {
-    const image = canvas.toDataURL("image/jpeg", 0.9); 
-    const timestamp = Date.now(); 
+  function saveDrawing() {
+    // Set a white background if the canvas is empty or has transparency
+    const tempCanvas = document.createElement("canvas");
+    const tempCtx = tempCanvas.getContext("2d");
+    tempCanvas.width = canvas.width;
+    tempCanvas.height = canvas.height;
+
+    // Set white background
+    tempCtx.fillStyle = "#FFFFFF"; 
+    tempCtx.fillRect(0, 0, tempCanvas.width, tempCanvas.height);
+
+    // Draw the existing canvas content over the white background
+    tempCtx.drawImage(canvas, 0, 0);
+
+    // Save the canvas as PNG
+    const image = tempCanvas.toDataURL("image/png"); // Ensure it's PNG with the background
+
+    const timestamp = Date.now();
     localStorage.setItem(`final-drawing-${timestamp}`, image); // Save with a unique key
-    alert("Drawing saved locally!");
-  
+    alert("Drawing saved locally as a PNG image!");
+
     /*
     // Future Implementation: Upload the image to AWS S3 via API Gateway with Cognito Authentication
     const apiEndpoint = "https://your-api-gateway-endpoint.amazonaws.com/prod/upload";
     const imageData = {
-      name: name, // Name of the drawing
-      imageBase64: image.replace(/^data:image\/jpeg;base64,/, "") // Remove base64 prefix
+      name: `drawing-${timestamp}`, // Name of the drawing
+      imageBase64: image.replace(/^data:image\/png;base64,/, "") // Remove base64 prefix
     };
   
     // Retrieve Cognito user token (replace with actual method to get the token)
@@ -178,7 +193,8 @@ document.addEventListener("DOMContentLoaded", () => {
       alert("An error occurred while uploading the drawing.");
     });
     */
-  } 
+}
+
   
   
 });
