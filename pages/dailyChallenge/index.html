@@ -7,11 +7,17 @@
     <title>Dooodles</title>
     <link rel="stylesheet" href="../../public/general.css" />
     <link rel="stylesheet" href="../../components/navbar/style.css" />
+    <link rel="stylesheet" href="../../components/loader/style.css" />
     <link rel="stylesheet" href="./style.css" />
   </head>
   <body>
     <!-- Navbar -->
     <div id="navbar-container"></div>
+
+    <!-- Loader -->
+    <div class="loader-container" id="loader-container">
+      <span class="loader"></span>
+    </div>
 
     <!-- Daily Challenge Section -->
     <section class="daily-challenge">
@@ -19,21 +25,7 @@
       <p class="challenge-name" id="challenge-name">Dog walks on the moon</p>
 
       <!-- Gallery of Drawings -->
-      <div class="drawing-gallery">
-        <!-- Example drawing card -->
-        <div class="drawing-card">
-          <img
-            src="../../assets/images/doodle1.png"
-            alt="Drawing 1"
-            class="drawing-img"
-          />
-          <div class="username">User123</div>
-          <button class="rate-btn" data-img="../../assets/images/doodle1.png">
-            Rate
-          </button>
-        </div>
-        <!-- More drawing cards can be added here -->
-      </div>
+      <div class="drawing-gallery"></div>
     </section>
 
     <!-- Dark Overlay for Background when Popup is active -->
@@ -61,13 +53,14 @@
         </div>
 
         <div class="popup-buttons">
-          <button id="save-btn" class="popup-btn">Save</button>
-          <button id="cancel-btn" class="popup-btn">Cancel</button>
+          <button id="cancel-btn" class="btn-stroke popup-btn">Cancel</button>
+          <button id="save-btn" class="btn-full popup-btn">Save</button>
         </div>
       </div>
     </div>
 
     <script src="../../components/navbar/index.js"></script>
+    <script src="../../components/loader/loader.js"></script>
     <script src="dailyChallenge.js"></script>
   </body>
 </html>

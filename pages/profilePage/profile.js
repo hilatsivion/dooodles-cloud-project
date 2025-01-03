@@ -1,11 +1,13 @@
-document.addEventListener("DOMContentLoaded",async () => {
+document.addEventListener("DOMContentLoaded", async () => {
+  // use a function like this to fetch the data and handle the loader. the function located in loader
+  // fetchData()
+  showLoader(); // for now
+
   const userData = {
     username: "User123", // From DynamoDB
     points: 53, // From DynamoDB
     doodles: [], // Will populate with images and random data
   };
-
-  
 
   const randomSentences = [
     "A funny cat on the beach.",
@@ -29,7 +31,7 @@ document.addEventListener("DOMContentLoaded",async () => {
 
   // remove until here
 
-    // Future implementation: Fetch user data from DynamoDB via API Gateway using Cognito token
+  // Future implementation: Fetch user data from DynamoDB via API Gateway using Cognito token
   /*
   const apiEndpointUserData = "https://your-api-gateway-endpoint.amazonaws.com/prod/userdata";
   const userToken = localStorage.getItem("cognitoUserToken"); // Retrieve the Cognito token after login
@@ -63,7 +65,6 @@ document.addEventListener("DOMContentLoaded",async () => {
   }
   */
 
-
   // Set the user's name and points
   const usernameElement = document.getElementById("username");
   const userPointsElement = document.getElementById("user-points");
@@ -92,10 +93,10 @@ document.addEventListener("DOMContentLoaded",async () => {
     });
   } else {
     // No doodles found
-    noDoodlesMessage.style.display = "block"; // Show the "No doodles yet" message
+    doodleCardsContainer.style.display = "none";
+    noDoodlesMessage.style.display = "flex"; // Show the "No doodles yet" message
   }
 });
-
 
 async function getAllImages() {
   const images = [];
@@ -111,8 +112,6 @@ async function getAllImages() {
       });
     }
   }
-
-
 
   /*
   // Future Implementation: Fetch images via API Gateway with Cognito Authentication

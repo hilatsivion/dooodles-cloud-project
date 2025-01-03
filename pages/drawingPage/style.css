@@ -2,10 +2,11 @@
 .pre-start-drawing {
   display: flex;
   align-items: center;
-  padding-top: 20vh;
+  padding-top: 14vh;
   flex-direction: column;
-  height: 100vh;
+  min-height: 90vh;
   gap: 3rem;
+  position: relative;
 }
 
 .title-challenge {
@@ -21,9 +22,9 @@
 }
 
 .ready-text {
-  font-size: 4rem;
+  font-size: 3rem;
   font-weight: 600;
-  margin-bottom: 30px;
+  margin-bottom: 10px;
 }
 
 .play-btn {
@@ -62,6 +63,45 @@
   height: 90vh;
   width: 100%;
   align-items: center;
-  justify-content: center;
+  margin-top: 2rem;
   flex-direction: column;
+}
+
+.illustration {
+  position: absolute;
+}
+
+.img-1 {
+  top: 3vh;
+  right: 5vw;
+}
+
+.img-2 {
+  bottom: 10vh;
+  right: 10vw;
+}
+
+.img-3 {
+  bottom: 7vh;
+  right: 40vw;
+}
+
+.img-4 {
+  bottom: 14vh;
+  left: 7vw;
+}
+
+.img-5 {
+  bottom: 27vh;
+  left: 20vw;
+}
+
+.img-6 {
+  bottom: 60vh;
+  left: 5vw;
+}
+
+.img-7 {
+  top: 6vh;
+  left: 30vw;
 }

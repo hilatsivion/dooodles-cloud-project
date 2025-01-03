@@ -1,4 +1,8 @@
 document.addEventListener("DOMContentLoaded", () => {
+  // use a function like this to fetch the data and handle the loader. the function located in loader
+  // fetchData()
+  showLoader(); // for now
+
   // Simulate fetching drawing data (Replace this with actual data fetch from server)
   const drawings = [
     {

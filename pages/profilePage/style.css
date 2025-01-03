@@ -1,8 +1,6 @@
 /* Profile Page */
 .profile {
-  padding: 20px;
   min-height: 100vh;
-  font-family: "ClashDisplay", sans-serif;
 }
 
 .profile-header {

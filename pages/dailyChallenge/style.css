@@ -98,10 +98,10 @@
 
 .popup-content {
   background-color: #fff;
-  padding: 30px;
+  padding: 50px;
   border-radius: 10px;
   text-align: center;
-  width: 300px;
+  width: 500px;
 }
 
 #popup-img {
@@ -122,6 +122,7 @@
 
 #rating-slider {
   width: 100%;
+  accent-color: #f24511;
 }
 
 #slider-value {
@@ -135,14 +136,12 @@
 }
 
 .popup-btn {
-  background-color: var(--primary);
-  color: white;
-  border: none;
-  padding: 10px 20px;
-  border-radius: 20px;
-  cursor: pointer;
+  width: 45%;
+}
+.btn-full.popup-btn {
+  background-color: var(--green);
 }
 
-.popup-btn:hover {
-  background-color: #a43516; /* Darker shade on hover */
+.btn-full.popup-btn:hover {
+  background-color: rgb(11 143 93);
 }

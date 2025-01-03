@@ -127,6 +127,7 @@ section {
 .btn-stroke {
   border: 1px solid var(--primary);
   color: var(--primary);
+  background-color: transparent;
   padding: 10px 24px;
   font-size: 1rem;
   text-decoration: none;
