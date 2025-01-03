@@ -1,0 +1,71 @@
+/* Daily Challenge Page */
+.daily-challenge {
+  min-height: 100vh;
+  padding-bottom: 10vh;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  margin-top: 30px;
+}
+
+.daily-challenge-title {
+  font-size: 4rem;
+  font-weight: 600;
+}
+
+.challenge-name {
+  font-size: 2rem;
+  font-weight: bold;
+  color: var(--primary);
+  text-align: center;
+}
+
+.drawing-gallery {
+  margin-top: 40px;
+  display: flex;
+  gap: 60px;
+  justify-content: center;
+  max-width: 1400px;
+  height: 100%;
+  flex-wrap: wrap;
+}
+
+.drawing-card {
+  background-color: #fff;
+  border-radius: 10px;
+  border: 1px solid #ccc;
+  padding: 15px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 30vh;
+}
+
+.drawing-card img {
+  width: 100%;
+  height: auto;
+  max-height: 200px;
+  object-fit: contain;
+  margin-bottom: 10px;
+}
+
+.drawing-card .username {
+  font-weight: 500;
+  font-size: 1.1rem;
+  color: #2e130a;
+}
+
+.drawing-card .rate-btn {
+  background-color: var(--primary);
+  color: white;
+  border: none;
+  padding: 4px 16px;
+  font-size: 0.9rem;
+  border-radius: 20px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.drawing-card .rate-btn:hover {
+  background-color: #a43516;
+}
