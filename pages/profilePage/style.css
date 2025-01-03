@@ -41,21 +41,6 @@
   gap: 40px;
 }
 
-.doodle-cards .doodle-card {
-  background-color: #fff;
-  border: 1px solid #ccc;
-  padding: 20px;
-  border-radius: 10px;
-  text-align: center;
-}
-
-.doodle-cards .doodle-card img {
-  width: 100%;
-  max-height: 200px;
-  object-fit: contain;
-  margin-bottom: 10px;
-}
-
 .no-doodles-message {
   display: none;
   color: #888;
@@ -71,6 +56,7 @@
 .container-info-user > h1 {
   line-height: normal;
 }
+
 .container-info-user {
   background-color: var(--white);
   border-radius: 80px;
@@ -78,4 +64,38 @@
   width: fit-content;
   padding: 20px 100px 15px 100px;
   transform: translateY(40%);
+}
+
+.doodle-cards .doodle-card {
+  background-color: var(--white);
+  border-radius: 16px;
+  border: 1px solid #ccc;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 30vh;
+}
+
+.doodle-cards .doodle-card img {
+  width: 100%;
+  height: auto;
+  max-height: 200px;
+  object-fit: contain;
+  margin-bottom: 10px;
+  border: 2px solid var(--bg);
+  border-radius: 10px;
+}
+
+.drawing-card h3 {
+  font-weight: 500;
+  font-size: 1.1rem;
+  color: #2e130a;
+}
+
+.info-card {
+  width: 100%;
+  padding: 10px 20px;
+  background-color: #ffb18a54;
+  border-radius: 0 0 16px 16px;
+  text-align: center;
 }

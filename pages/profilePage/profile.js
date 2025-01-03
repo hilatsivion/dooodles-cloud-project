@@ -10,12 +10,12 @@ document.addEventListener("DOMContentLoaded", async () => {
   };
 
   const randomSentences = [
-    "A funny cat on the beach.",
-    "A dog chasing butterflies.",
-    "A peaceful mountain landscape.",
-    "A city skyline at dusk.",
-    "An abstract splash of colors.",
-    "A surreal underwater scene.",
+    "A funny cat on the beach",
+    "A dog chasing butterflies",
+    "A peaceful mountain landscape",
+    "A city skyline at dusk",
+    "An abstract splash of colors",
+    "A surreal underwater scene",
   ];
 
   function getRandomScore() {
@@ -86,8 +86,10 @@ document.addEventListener("DOMContentLoaded", async () => {
       card.classList.add("doodle-card");
       card.innerHTML = `
           <img src="${doodle.image}" alt="${doodle.title}">
-          <h3>${doodle.title}</h3>
-          <p>Score: ${doodle.score}</p>
+          <div class="info-card">
+          <h4>${doodle.title}</h4>
+          <p>${doodle.score}</p>
+          </div>
         `;
       doodleCardsContainer.appendChild(card);
     });
