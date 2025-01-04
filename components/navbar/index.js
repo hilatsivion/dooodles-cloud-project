@@ -30,7 +30,7 @@ document.addEventListener("DOMContentLoaded", function () {
         localStorage.removeItem("username");
 
         // Redirect to the homepage after logout
-        window.location.href = "../../pages/homepage"; // Redirect to homepage or login page
+        window.location.href = "../../pages/homepage";
       });
     } else {
       // If the user is not logged in, show the default links (Sign up / Login)
