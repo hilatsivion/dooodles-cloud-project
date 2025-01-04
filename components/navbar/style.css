@@ -1,13 +1,7 @@
 #navbar-container {
-  width: 100%;
   position: sticky;
   top: 0;
-  background-color: var(--bg);
   z-index: 2;
-  font-family: "ClashDisplay", sans-serif;
-}
-
-.navbar {
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -38,4 +32,12 @@
 
 .nav-link:hover {
   color: var(--primary); /* Orange color on hover */
+}
+
+.user-profile {
+  color: var(--black);
+}
+
+.nav-link.log-out {
+  font-size: 0.9rem;
 }

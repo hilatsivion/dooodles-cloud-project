@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="shortcut icon" href="#" />
+    <title>Dooodles</title>
+    <link rel="stylesheet" href="../../public/general.css" />
+    <link rel="stylesheet" href="../../components/navbar/style.css" />
+    <link rel="stylesheet" href="./style.css" />
+  </head>
+  <body>
+    <!-- Navbar -->
+    <div id="navbar-container"></div>
+
+    <!-- Login Section -->
+    <section class="form-section">
+      <div class="form-container-bg">
+        <h1 class="form-header">Welcome Back!</h1>
+
+        <form class="form-container">
+          <input type="email" placeholder="Enter email" required />
+          <input type="password" placeholder="Enter password" required />
+          <button type="submit" class="btn-full">Log in</button>
+        </form>
+
+        <p class="toggle-form-link">
+          Oops, I don't have an account yet
+          <a href="./signup.html">Sign Up</a>
+        </p>
+      </div>
+    </section>
+
+    <script src="../../components/navbar/index.js"></script>
+    <script src="./login.js"></script>
+    <script src="./formValidation.js"></script>
+  </body>
+</html>
