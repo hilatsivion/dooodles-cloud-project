@@ -10,7 +10,7 @@ document.addEventListener("DOMContentLoaded", function () {
     if (loggedIn === "true") {
       navbarContainer.innerHTML = `
         <div class="nav-links">
-          <div class="logo"><a href="../../pages/homepage/index.html">Dooodles</a></div>
+          <div class="logo"><a href="../../pages/homePage/index.html">Dooodles</a></div>
           <div class="links-txt">
             <a href="../../pages/homePage/index.html" class="nav-link">Home</a>
             <a href="../../pages/dailyChallenge/index.html" class="nav-link">Daily Challenge</a>
@@ -30,15 +30,15 @@ document.addEventListener("DOMContentLoaded", function () {
         localStorage.removeItem("username");
 
         // Redirect to the homepage after logout
-        window.location.href = "../../pages/homepage/index.html";
+        window.location.href = "../../pages/homePage/index.html";
       });
     } else {
       // If the user is not logged in, show the default links (Sign up / Login)
       navbarContainer.innerHTML = `
         <div class="nav-links">
-          <div class="logo"><a href="../../pages/homepage/index.html">Dooodles</a></div>
+          <div class="logo"><a href="../../pages/homePage/index.html">Dooodles</a></div>
           <div class="links-txt">
-            <a href="../../pages/homepage/index.html" class="nav-link">Home</a>
+            <a href="../../pages/homePage/index.html" class="nav-link">Home</a>
             <a href="../../pages/dailyChallenge/index.html" class="nav-link">Daily Challenge</a>
             <a href="../../pages/Leadboard/index.html" class="nav-link">Leader board</a>
           </div>
