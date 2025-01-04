@@ -15,6 +15,6 @@ document.addEventListener("DOMContentLoaded", () => {
     localStorage.setItem("username", "User123"); // Replace 'User123' with the actual username from the form
 
     // Redirect to home page
-    window.location.href = "../../pages/homePage";
+    window.location.href = "../../pages/homePage/index.html";
   });
 });

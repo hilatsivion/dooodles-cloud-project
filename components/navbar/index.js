@@ -10,17 +10,17 @@ document.addEventListener("DOMContentLoaded", function () {
     if (loggedIn === "true") {
       navbarContainer.innerHTML = `
         <div class="nav-links">
-          <div class="logo"><a href="../../pages/homepage">Dooodles</a></div>
+          <div class="logo"><a href="../../pages/homepage/index.html">Dooodles</a></div>
           <div class="links-txt">
-            <a href="../../pages/homepage" class="nav-link">Home</a>
-            <a href="../../pages/dailyChallenge" class="nav-link">Daily Challenge</a>
-            <a href="../../pages/Leadboard" class="nav-link">Leader board</a>
-            <a href="../../pages/drawingPage" class="nav-link start-drawing">Start Drawing</a>
+            <a href="../../pages/homePage/index.html" class="nav-link">Home</a>
+            <a href="../../pages/dailyChallenge/index.html" class="nav-link">Daily Challenge</a>
+            <a href="../../pages/Leadboard/index.html" class="nav-link">Leader board</a>
+            <a href="../../pages/drawingPage/index.html" class="nav-link start-drawing">Start Drawing</a>
           </div>
         </div>
         <div class="auth-buttons">
-        <a href="../../pages/profilePage" class="btn-stroke user-profile">${username}</a>
-        <a href="../../pages/homePage" class="nav-link log-out">Log out</a>
+        <a href="../../pages/profilePage/index.html" class="btn-stroke user-profile">${username}</a>
+        <a href="../../pages/homePage/index.html" class="nav-link log-out">Log out</a>
         </div>
       `;
       const logOutButton = document.querySelector(".log-out");
@@ -30,17 +30,17 @@ document.addEventListener("DOMContentLoaded", function () {
         localStorage.removeItem("username");
 
         // Redirect to the homepage after logout
-        window.location.href = "../../pages/homepage";
+        window.location.href = "../../pages/homepage/index.html";
       });
     } else {
       // If the user is not logged in, show the default links (Sign up / Login)
       navbarContainer.innerHTML = `
         <div class="nav-links">
-          <div class="logo"><a href="../../pages/homepage">Dooodles</a></div>
+          <div class="logo"><a href="../../pages/homepage/index.html">Dooodles</a></div>
           <div class="links-txt">
-            <a href="../../pages/homepage" class="nav-link">Home</a>
-            <a href="../../pages/dailyChallenge" class="nav-link">Daily Challenge</a>
-            <a href="../../pages/Leadboard" class="nav-link">Leader board</a>
+            <a href="../../pages/homepage/index.html" class="nav-link">Home</a>
+            <a href="../../pages/dailyChallenge/index.html" class="nav-link">Daily Challenge</a>
+            <a href="../../pages/Leadboard/index.html" class="nav-link">Leader board</a>
           </div>
         </div>
         <div class="auth-buttons">

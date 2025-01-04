@@ -16,6 +16,6 @@ document.addEventListener("DOMContentLoaded", () => {
     localStorage.setItem("username", username); // Store the actual username entered
 
     // Redirect to home page
-    window.location.href = "../../pages/homePage";
+    window.location.href = "../../pages/homePage/index.html";
   });
 });
