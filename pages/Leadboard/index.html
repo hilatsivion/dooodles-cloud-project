@@ -7,16 +7,21 @@
     <title>Dooodles</title>
     <link rel="stylesheet" href="../../public/general.css" />
     <link rel="stylesheet" href="../../components/navbar/style.css" />
+    <link rel="stylesheet" href="../../components/loader/style.css" />
     <link rel="stylesheet" href="./style.css" />
 
     <!-- AWS SDK and Cognito Identity Imports -->
     <script src="https://sdk.amazonaws.com/js/aws-sdk-2.1241.0.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/amazon-cognito-identity-js@6.2.0/dist/amazon-cognito-identity.min.js"></script>
-
   </head>
   <body>
     <!-- Navbar -->
     <div id="navbar-container"></div>
+
+    <!-- Loader -->
+    <div class="loader-container" id="loader-container">
+      <span class="loader"></span>
+    </div>
 
     <!-- Leaderboard Section -->
     <section class="leaderboard">
@@ -29,8 +34,9 @@
       </div>
     </section>
 
-    <script type="module" src="../../public/utils.js"></script> <!-- Cognito utility functions -->
+    <script type="module" src="../../public/utils.js"></script>
     <script type="module" src="../../components/navbar/index.js"></script>
+    <script src="../../components/loader/loader.js"></script>
     <script src="./leadboard.js"></script>
   </body>
 </html>

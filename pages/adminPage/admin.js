@@ -1,88 +1,85 @@
-const users = [
-  {
-    email: "hila@gmail.com",
-    username: "hila",
-    birthdate: "1998-05-12",
-    score: 34,
-    drawings: 34,
-  },
-  {
-    email: "ran@gmail.com",
-    username: "ran",
-    birthdate: "1997-08-23",
-    score: 23,
-    drawings: 11,
-  },
-  {
-    email: "alon@gmail.com",
-    username: "alon",
-    birthdate: "1999-01-15",
-    score: 11,
-    drawings: 3,
-  },
-  {
-    email: "gad@gmail.com",
-    username: "gad",
-    birthdate: "1995-03-30",
-    score: 90,
-    drawings: 1,
-  },
-];
+let users = [];
+let currentEditingRow = null; // Track the currently editing row
 
+// load all users to the table
 function loadUsers() {
-  const tbody = document.querySelector("#userTable tbody");
-  tbody.innerHTML = "";
-  users.forEach((user, index) => {
-    tbody.innerHTML += `
-            <tr>
-                <td>${user.email}</td>
-                <td>${user.username}</td>
-                <td>${user.birthdate}</td>
-                <td>${user.score}</td>
-                <td>${user.drawings}</td>
-                <td><button class="edit-btn" onclick="editRow(${index})">Edit</button></td>
-            </tr>
+  showLoader();
+  fetch("/api/admin/getUsers")
+    .then((response) => response.json())
+    .then((data) => {
+      users = data;
+      const tbody = document.querySelector("#userTable tbody");
+      tbody.innerHTML = "";
+      users.forEach((user, index) => {
+        tbody.innerHTML += `
+          <tr>
+            <td>${user.email}</td>
+            <td>${user.username}</td>
+            <td>${user.birthdate}</td>
+            <td>${user.score}</td>
+            <td>${user.drawings}</td>
+            <td><button class="edit-btn" onclick="editRow(${index})">Edit</button></td>
+          </tr>
         `;
-  });
+      });
+      hideLoader();
+    })
+    .catch((err) => {
+      console.error("Error fetching users:", err);
+      alert("Failed to load users. Please try again.");
+      hideLoader();
+    });
 }
 
+// after click on "edit", the row will become editable
 function editRow(index) {
+  if (currentEditingRow !== null && currentEditingRow !== index) {
+    // Cancel previous edit if another row is being edited
+    const previousRow = document.querySelectorAll("#userTable tbody tr")[
+      currentEditingRow
+    ];
+    const prevUsername = users[currentEditingRow].username;
+    const prevBirthdate = users[currentEditingRow].birthdate;
+    previousRow.cells[1].innerText = prevUsername;
+    previousRow.cells[2].innerText = prevBirthdate;
+    previousRow.cells[5].innerHTML = `<button class="edit-btn" onclick="editRow(${currentEditingRow})">Edit</button>`;
+  }
+
+  currentEditingRow = index; // Set the current editing row
+
   const row = document.querySelectorAll("#userTable tbody tr")[index];
   const usernameCell = row.cells[1];
-  const scoreCell = row.cells[3];
+  const birthdateCell = row.cells[2];
 
   const originalUsername = usernameCell.innerText;
-  const originalScore = scoreCell.innerText;
+  const originalBirthdate = birthdateCell.innerText;
 
   usernameCell.innerHTML = `<input type="text" value="${originalUsername}" id="usernameInput${index}">`;
-  scoreCell.innerHTML = `<input type="number" value="${originalScore}" id="scoreInput${index}">`;
+  birthdateCell.innerHTML = `<input type="date" value="${originalBirthdate}" id="birthdateInput${index}">`;
 
   row.cells[5].innerHTML = `
-        <button class="save-btn" onclick="saveChanges(${index})">Save</button>
-        <button class="cancel-btn" onclick="cancelChanges(${index}, '${originalUsername}', ${originalScore})">Cancel</button>
+      <button class="save-btn" onclick="saveChanges(${index})">Save</button>
+      <button class="cancel-btn" onclick="cancelChanges(${index}, '${originalUsername}', '${originalBirthdate}')">Cancel</button>
     `;
 }
 
+// save the user changes the admin have done
 function saveChanges(index) {
+  showLoader();
   const updatedUsername = document
     .getElementById(`usernameInput${index}`)
     .value.trim();
-  const updatedScore = parseInt(
-    document.getElementById(`scoreInput${index}`).value.trim(),
-    10
-  );
-
-  if (isNaN(updatedScore) || updatedScore < 0) {
-    alert("Score must be a valid positive number.");
-    return;
-  }
+  const updatedBirthdate = document.getElementById(
+    `birthdateInput${index}`
+  ).value;
 
   const updatedUser = {
     email: users[index].email,
     username: updatedUsername,
-    score: updatedScore,
+    birthdate: updatedBirthdate,
   };
 
+  // send data to server
   fetch("/api/admin/updateUser", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
@@ -90,22 +87,46 @@ function saveChanges(index) {
   })
     .then((response) => response.json())
     .then(() => {
-      alert("User updated successfully!");
+      showPopup();
       users[index].username = updatedUsername;
-      users[index].score = updatedScore;
+      users[index].birthdate = updatedBirthdate;
+      currentEditingRow = null;
       loadUsers();
     })
     .catch((err) => {
       console.error("Error updating user:", err);
       alert("Failed to update user. Please try again.");
+      hideLoader();
     });
 }
 
-function cancelChanges(index, originalUsername, originalScore) {
+// cancel all changes in a row and not save.
+function cancelChanges(index, originalUsername, originalBirthdate) {
   const row = document.querySelectorAll("#userTable tbody tr")[index];
   row.cells[1].innerText = originalUsername;
-  row.cells[3].innerText = originalScore;
+  row.cells[2].innerText = originalBirthdate;
   row.cells[5].innerHTML = `<button class="edit-btn" onclick="editRow(${index})">Edit</button>`;
+  currentEditingRow = null;
+}
+
+// show the popup on save successfully
+function showPopup() {
+  const popup = document.getElementById("popup");
+  const overlay = document.getElementById("overlay");
+  const cancelButton = document.getElementById("cancel-btn");
+
+  popup.style.display = "flex";
+  overlay.style.display = "block";
+
+  cancelButton.addEventListener("click", () => {
+    popup.style.display = "none";
+    overlay.style.display = "none";
+  });
+
+  overlay.addEventListener("click", () => {
+    popup.style.display = "none";
+    overlay.style.display = "none";
+  });
 }
 
 window.onload = loadUsers;
