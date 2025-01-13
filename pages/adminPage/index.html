@@ -1,0 +1,44 @@
+<!-- index.html -->
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Dooodles</title>
+    <link rel="stylesheet" href="../../public/general.css" />
+    <link rel="stylesheet" href="../../components/navbar/style.css" />
+    <link rel="stylesheet" href="../../components/loader/style.css" />
+    <link rel="stylesheet" href="./style.css" />
+  </head>
+  <body>
+    <div id="navbar-container"></div>
+
+    <!-- Loader -->
+    <div class="loader-container" id="loader-container">
+      <span class="loader"></span>
+    </div>
+
+    <div class="container">
+      <h1>Users Management</h1>
+      <table id="userTable">
+        <thead>
+          <tr>
+            <th>Email</th>
+            <th>Username</th>
+            <th>Birthdate</th>
+            <th>Score</th>
+            <th>Number of Drawings</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <!-- Dynamic content will be injected here -->
+        </tbody>
+      </table>
+    </div>
+    <script type="module" src="../../public/utils.js"></script>
+    <script type="module" src="../../components/navbar/index.js"></script>
+    <script src="../../components/loader/loader.js"></script>
+    <script src="./admin.js"></script>
+  </body>
+</html>

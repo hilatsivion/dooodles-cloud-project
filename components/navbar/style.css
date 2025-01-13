@@ -41,3 +41,22 @@
 .nav-link.log-out {
   font-size: 0.9rem;
 }
+
+span {
+  margin-left: 1rem;
+}
+
+/* Admin Button */
+.admin-btn {
+  font-weight: bold;
+  background-color: transparent;
+  border: 2px solid #ff4500;
+  color: #ff4500;
+  border-radius: 20px;
+  padding: 8px 16px;
+}
+
+.admin-btn:hover {
+  background-color: #ff4500;
+  color: white;
+}

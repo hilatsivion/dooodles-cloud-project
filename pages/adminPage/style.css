@@ -1,0 +1,92 @@
+.container {
+  margin: 20px auto;
+  width: 80%;
+  text-align: center;
+  height: 90vh;
+}
+
+h1 {
+  font-size: 4rem;
+  font-weight: 600;
+  text-align: center;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0px 4px 20px #d2d0cc84;
+}
+
+th,
+td {
+  padding: 15px;
+  text-align: center;
+  border-bottom: 1px solid #ddd;
+}
+
+td:nth-child(6) {
+  display: flex;
+  flex-direction: column;
+}
+
+th {
+  background-color: #f5f5f5;
+  font-weight: 600;
+}
+
+tr:nth-child(even) {
+  background-color: #fafafa;
+}
+tr:nth-child(odd) {
+  background-color: #fff;
+}
+
+button.edit-btn {
+  background-color: #aeaeae;
+  color: white;
+  padding: 5px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: all ease 0.5s;
+  border-radius: 20px;
+}
+
+tr:hover {
+  background-color: #f5d7c2 !important;
+  color: var(--primary);
+}
+tr:hover button.edit-btn {
+  background-color: var(--primary) !important;
+  border-radius: 6px;
+}
+
+tr {
+  transition: all ease 0.3s;
+}
+
+button.save-btn {
+  background-color: var(--green);
+  color: white;
+  padding: 5px 10px;
+  border-radius: 5px;
+}
+
+button.cancel-btn {
+  border: none;
+  color: #8d8888;
+  font-size: 0.9rem;
+  padding-top: 5px;
+  background-color: transparent;
+}
+
+input {
+  border: 1px solid black;
+  border-radius: 19px;
+  padding: 5px 10px;
+  text-align: center;
+  font-family: "ClashDisplay";
+}
