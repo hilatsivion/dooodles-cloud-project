@@ -1,4 +1,7 @@
 document.addEventListener("DOMContentLoaded", () => {
+  const challengeNameElement = document.getElementById("challenge-name");
+  const drawingChallengeTitle = document.getElementById("drawing-challenge");
+
   const startButton = document.getElementById("start-button");
   const preStartDrawingSection = document.querySelector(".pre-start-drawing");
   const drawingSection = document.querySelector(".drawing");
@@ -20,6 +23,17 @@ document.addEventListener("DOMContentLoaded", () => {
   let hue = 0;
   let lastDotTime = 0;
 
+  fetch("/api/dailyChallenge/getCurrentChallenge")
+    .then((response) => response.json())
+    .then((data) => {
+      challengeNameElement.textContent = data.challengeName;
+      drawingChallengeTitle.textContent = data.challengeName;
+    })
+    .catch((err) => {
+      console.error("Error fetching challenge:", err);
+      challengeNameElement.textContent = "Failed to load challenge";
+    });
+
   startButton.addEventListener("click", () => {
     preStartDrawingSection.style.opacity = "0";
     preStartDrawingSection.style.display = "none";
@@ -27,25 +41,22 @@ document.addEventListener("DOMContentLoaded", () => {
     drawingSection.style.opacity = "1";
   });
 
-  document.getElementById("save").addEventListener("click", () => {
-    saveDrawing(); // Save the drawing
-    window.location.href = "../homePage";
-  });
-  
+  document.getElementById("save").addEventListener("click", saveDrawing);
 
+  // functinallity of canvas
   canvas.addEventListener("mousedown", () => (drawing = true));
+
   canvas.addEventListener("mouseup", () => {
     drawing = false;
     lastX = null;
     lastY = null;
   });
-  
+
   canvas.addEventListener("mouseleave", () => {
     drawing = false;
     lastX = null;
     lastY = null;
   });
-  
   canvas.addEventListener("mousemove", draw);
 
   brushButtons.forEach((button) => {
@@ -74,13 +85,14 @@ document.addEventListener("DOMContentLoaded", () => {
     color = e.target.value;
   });
 
+  // draw on the canvas
   function draw(event) {
     if (!drawing) return;
 
     const rect = canvas.getBoundingClientRect();
     const x = (event.clientX - rect.left) * (canvas.width / rect.width);
     const y = (event.clientY - rect.top) * (canvas.height / rect.height);
-    
+
     if (erasing) {
       ctx.clearRect(x - brushSize / 2, y - brushSize / 2, brushSize, brushSize);
       return;
@@ -100,15 +112,15 @@ document.addEventListener("DOMContentLoaded", () => {
       }
     } else if (currentBrush === "dots") {
       ctx.fillStyle = color;
-    
-      const dotInterval = brushSize*2; 
-      const currentTime = Date.now(); 
-    
+
+      const dotInterval = brushSize * 2;
+      const currentTime = Date.now();
+
       if (currentTime - lastDotTime >= dotInterval) {
         ctx.beginPath();
         ctx.arc(x, y, brushSize / 2, 0, Math.PI * 2);
         ctx.fill();
-    
+
         lastDotTime = currentTime;
         lastX = x;
         lastY = y;
@@ -134,69 +146,50 @@ document.addEventListener("DOMContentLoaded", () => {
     lastY = y;
   }
 
+  // save the drawing to db
   function saveDrawing() {
-    // Set a white background if the canvas is empty or has transparency
-    const tempCanvas = document.createElement("canvas");
-    const tempCtx = tempCanvas.getContext("2d");
-    tempCanvas.width = canvas.width;
-    tempCanvas.height = canvas.height;
+    const image = canvas.toDataURL("image/png");
+    const challengeName = document.getElementById("challenge-name").textContent;
+    const username = localStorage.getItem("username");
 
-    // Set white background
-    tempCtx.fillStyle = "#FFFFFF"; 
-    tempCtx.fillRect(0, 0, tempCanvas.width, tempCanvas.height);
-
-    // Draw the existing canvas content over the white background
-    tempCtx.drawImage(canvas, 0, 0);
-
-    // Save the canvas as PNG
-    const image = tempCanvas.toDataURL("image/png"); // Ensure it's PNG with the background
-
-    const timestamp = Date.now();
-    localStorage.setItem(`final-drawing-${timestamp}`, image); // Save with a unique key
-    alert("Drawing saved locally as a PNG image!");
-
-    /*
-    // Future Implementation: Upload the image to AWS S3 via API Gateway with Cognito Authentication
-    const apiEndpoint = "https://your-api-gateway-endpoint.amazonaws.com/prod/upload";
-    const imageData = {
-      name: `drawing-${timestamp}`, // Name of the drawing
-      imageBase64: image.replace(/^data:image\/png;base64,/, "") // Remove base64 prefix
-    };
-  
-    // Retrieve Cognito user token (replace with actual method to get the token)
-    const userToken = localStorage.getItem("cognitoUserToken"); // Example: stored during login
-  
-    if (!userToken) {
-      alert("User not authenticated. Please log in.");
-      return;
-    }
-  
-    fetch(apiEndpoint, {
+    fetch("/api/dailyChallenge/saveDrawing", {
       method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "Authorization": `Bearer ${userToken}` // Pass Cognito user token in the Authorization header
-      },
-      body: JSON.stringify(imageData)
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        username: username,
+        challengeName: challengeName,
+        imageBase64: image.replace(/^data:image\/png;base64,/, ""),
+      }),
     })
-    .then((response) => {
-      if (response.ok) {
-        alert("Drawing successfully uploaded to S3!");
-      } else {
-        return response.json().then((errorData) => {
-          throw new Error(errorData.message || "Failed to upload the drawing.");
-        });
-      }
-    })
-    .catch((error) => {
-      console.error("Error uploading drawing:", error);
-      alert("An error occurred while uploading the drawing.");
+      .then((response) => response.json())
+      .then(() => {
+        // Drawing saved successfully!
+        showPopup();
+        window.location.href = "../homePage";
+      })
+      .catch((err) => {
+        console.error("Error saving drawing:", err);
+        alert("Failed to save drawing. Please try again.");
+      });
+  }
+
+  // show the popup on save successfully
+  function showPopup() {
+    const popup = document.getElementById("popup");
+    const overlay = document.getElementById("overlay");
+    const cancelButton = document.getElementById("cancel-btn");
+
+    popup.style.display = "flex";
+    overlay.style.display = "block";
+
+    cancelButton.addEventListener("click", () => {
+      popup.style.display = "none";
+      overlay.style.display = "none";
     });
-    */
-}
 
-  
-  
+    overlay.addEventListener("click", () => {
+      popup.style.display = "none";
+      overlay.style.display = "none";
+    });
+  }
 });
-
-

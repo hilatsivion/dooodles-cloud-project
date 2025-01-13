@@ -105,3 +105,14 @@
   top: 6vh;
   left: 30vw;
 }
+
+.popup-content {
+  background-color: #fff;
+  padding: 50px;
+  border-radius: 10px;
+  text-align: center;
+  display: flex;
+  width: 630px;
+  gap: 20px;
+  flex-direction: column;
+}
