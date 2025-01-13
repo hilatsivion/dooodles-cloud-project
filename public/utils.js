@@ -1,27 +1,10 @@
-const COGNITO_CONFIG = {
-  region: "us-east-1",
-  userPoolId: "us-east-1_bt8hGblD3",
-  clientId: "fgvo4399l4u33pvgcl69pqafk",
-  domain: "https://us-east-1bt8hgbld3.auth.us-east-1.amazoncognito.com",
-  redirectUri:
-    "https://doodles-website-bucket.s3.us-east-1.amazonaws.com/pages/homePage/index.html",
-};
-
 function login() {
-  const loginUrl = `${COGNITO_CONFIG.domain}/login?client_id=${
-    COGNITO_CONFIG.clientId
-  }&response_type=token&scope=email+openid+profile&redirect_uri=${encodeURIComponent(
-    COGNITO_CONFIG.redirectUri
-  )}`;
+  const loginUrl = `https://us-east-1qiuvxugwi.auth.us-east-1.amazoncognito.com/login?client_id=7m59qe2baupre61mo36mbbvi5q&response_type=code&scope=aws.cognito.signin.user.admin+email+openid+profile&redirect_uri=https%3A%2F%2Fdoodles-website-bucket.s3.us-east-1.amazonaws.com%2Fpages%2FhomePage%2Findex.html`;
   window.location.href = loginUrl;
 }
 
 function signup() {
-  const signupUrl = `${COGNITO_CONFIG.domain}/signup?client_id=${
-    COGNITO_CONFIG.clientId
-  }&response_type=token&scope=email+openid+profile&redirect_uri=${encodeURIComponent(
-    COGNITO_CONFIG.redirectUri
-  )}`;
+  const signupUrl = `https://us-east-1qiuvxugwi.auth.us-east-1.amazoncognito.com/signup?client_id=7m59qe2baupre61mo36mbbvi5q&redirect_uri=https%3A%2F%2Fdoodles-website-bucket.s3.us-east-1.amazonaws.com%2Fpages%2FhomePage%2Findex.html&response_type=code&scope=aws.cognito.signin.user.admin+email+openid+profile`;
   window.location.href = signupUrl;
 }
 
