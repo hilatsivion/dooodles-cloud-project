@@ -1,45 +1,61 @@
 function login() {
-  const loginUrl = `https://us-east-1qiuvxugwi.auth.us-east-1.amazoncognito.com/login?client_id=7m59qe2baupre61mo36mbbvi5q&response_type=code&scope=aws.cognito.signin.user.admin+email+openid+profile&redirect_uri=https%3A%2F%2Fdoodles-website-bucket.s3.us-east-1.amazonaws.com%2Fpages%2FhomePage%2Findex.html`;
+  const loginUrl = `https://us-east-1qiuvxugwi.auth.us-east-1.amazoncognito.com/login?client_id=7m59qe2baupre61mo36mbbvi5q&response_type=token&scope=aws.cognito.signin.user.admin+email+openid+profile&redirect_uri=https%3A%2F%2Fdoodles-website-bucket.s3.us-east-1.amazonaws.com%2Fpages%2FhomePage%2Findex.html`;
   window.location.href = loginUrl;
 }
 
 function signup() {
-  const signupUrl = `https://us-east-1qiuvxugwi.auth.us-east-1.amazoncognito.com/signup?client_id=7m59qe2baupre61mo36mbbvi5q&redirect_uri=https%3A%2F%2Fdoodles-website-bucket.s3.us-east-1.amazonaws.com%2Fpages%2FhomePage%2Findex.html&response_type=code&scope=aws.cognito.signin.user.admin+email+openid+profile`;
+  const signupUrl = `https://us-east-1qiuvxugwi.auth.us-east-1.amazoncognito.com/signup?client_id=7m59qe2baupre61mo36mbbvi5q&redirect_uri=https%3A%2F%2Fdoodles-website-bucket.s3.us-east-1.amazonaws.com%2Fpages%2FhomePage%2Findex.html&response_type=token&scope=aws.cognito.signin.user.admin+email+openid+profile`;
   window.location.href = signupUrl;
 }
 
 function logout() {
-  clearTokens();
+  clearTokens(); 
   const logoutUrl = `${COGNITO_CONFIG.domain}/logout?client_id=${
     COGNITO_CONFIG.clientId
   }&logout_uri=${encodeURIComponent(COGNITO_CONFIG.redirectUri)}`;
+
   window.location.href = logoutUrl;
+  setTimeout(() => {
+    location.reload(); 
+  }, 500); 
 }
 
+
 function parseTokens() {
+  console.log("Parsing tokens...");
   const hash = window.location.hash.substr(1);
   const params = new URLSearchParams(hash);
 
   const idToken = params.get("id_token");
-  const accessToken = params.get("access_token");
+  if (idToken) {
+    console.log("ID Token found:", idToken);
+    sessionStorage.setItem("idToken", idToken);
 
-  if (idToken && accessToken) {
-    localStorage.setItem("idToken", idToken);
-    localStorage.setItem("accessToken", accessToken);
-    return { idToken, accessToken };
+    const tokenPayload = decodeToken(idToken);
+    if (tokenPayload) {
+      const username = tokenPayload["cognito:username"] || tokenPayload.email || "User";
+      const isAdmin = tokenPayload["cognito:groups"]?.includes("Admin") || false;
+
+      sessionStorage.setItem("username", username);
+      sessionStorage.setItem("isAdmin", isAdmin);
+      console.log("Username:", username, "Is Admin:", isAdmin);
+    }
+    return idToken;
+  } else {
+    console.log("No ID Token found in the URL.");
   }
   return null;
 }
 
+
 function isLoggedIn() {
-  const idToken = localStorage.getItem("idToken");
-  const accessToken = localStorage.getItem("accessToken");
-  return Boolean(idToken && accessToken);
+  return Boolean(sessionStorage.getItem("idToken"));
 }
 
 function clearTokens() {
-  localStorage.removeItem("idToken");
-  localStorage.removeItem("accessToken");
+  sessionStorage.removeItem("idToken");
+  sessionStorage.removeItem("username");
+  sessionStorage.removeItem("isAdmin");
 }
 
 function decodeToken(token) {
@@ -53,17 +69,9 @@ function decodeToken(token) {
 }
 
 function logTokens() {
-  console.log("ID Token:", localStorage.getItem("idToken"));
-  console.log("Access Token:", localStorage.getItem("accessToken"));
+  console.log("ID Token:", sessionStorage.getItem("idToken"));
+  console.log("Username:", sessionStorage.getItem("username"));
+  console.log("Is Admin:", sessionStorage.getItem("isAdmin"));
 }
 
-export {
-  login,
-  signup,
-  logout,
-  parseTokens,
-  isLoggedIn,
-  clearTokens,
-  decodeToken,
-  logTokens,
-};
+export { login, signup, logout, parseTokens, isLoggedIn, clearTokens, decodeToken };

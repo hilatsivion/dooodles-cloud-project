@@ -1,27 +1,16 @@
 // Import Cognito utility functions
-import {
-  login,
-  signup,
-  logout,
-  parseTokens,
-  isLoggedIn,
-} from "../../public/utils.js";
+import { login, signup, logout, parseTokens, isLoggedIn } from "../../public/utils.js";
 
 document.addEventListener("DOMContentLoaded", function () {
   const navbarContainer = document.getElementById("navbar-container");
 
+  // Call parseTokens to ensure session storage is populated
+  parseTokens();
+
   // Check if the user is logged in
   const loggedIn = isLoggedIn();
-  const idToken = localStorage.getItem("idToken");
-  let username = null;
-  let isAdmin = false;
-
-  // Parse the ID Token to extract username and admin role
-  if (idToken) {
-    const tokenPayload = JSON.parse(atob(idToken.split(".")[1])); // Decode JWT payload
-    username = tokenPayload["cognito:username"] || tokenPayload.email || "User";
-    isAdmin = tokenPayload["custom:isAdmin"] === "true" || username === "admin";
-  }
+  const username = sessionStorage.getItem("username");
+  const isAdmin = sessionStorage.getItem("isAdmin") === "true";
 
   if (navbarContainer) {
     if (!loggedIn) {
