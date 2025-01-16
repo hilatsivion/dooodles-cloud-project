@@ -1,18 +1,17 @@
+import { API_BASE_URL } from "../../public/utils.js";
+
 document.addEventListener("DOMContentLoaded", () => {
   showLoader();
-  const loggedInUser = localStorage.getItem("username");
+  const username = sessionStorage.getItem("username");
 
   // Send a POST request with the logged-in user's username
-  fetch(
-    `https://17v5i6rril.execute-api.us-east-1.amazonaws.com/Prod/Doodles/UserId`,
-    {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ idToken: sessionStorage.getItem("idToken") }), // Sending the username in the request body
-    }
-  )
+  fetch(`${API_BASE_URL}/Doodles/UserId`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ idToken: sessionStorage.getItem("idToken") }), // Sending the username in the request body
+  })
     .then((response) => response.json())
     .then((data) => {
       const usernameElement = document.getElementById("username");
@@ -23,7 +22,7 @@ document.addEventListener("DOMContentLoaded", () => {
       const noDoodlesMessage = document.getElementById("no-doodles-message");
 
       // Set user's profile information
-      usernameElement.textContent = data.username;
+      usernameElement.textContent = username;
       userPointsElement.innerHTML = `${data.points} <span class="diamond">💎</span>`;
 
       if (data.doodles && data.doodles.length > 0) {

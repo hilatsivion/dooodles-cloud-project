@@ -1,3 +1,4 @@
+import { API_BASE_URL } from "../../public/utils.js";
 document.addEventListener("DOMContentLoaded", () => {
   const challengeNameElement = document.getElementById("challenge-name");
   const drawingChallengeTitle = document.getElementById("drawing-challenge");
@@ -23,7 +24,7 @@ document.addEventListener("DOMContentLoaded", () => {
   let hue = 0;
   let lastDotTime = 0;
 
-  fetch("/api/dailyChallenge/getCurrentChallenge")
+  fetch(`${API_BASE_URL}`)
     .then((response) => response.json())
     .then((data) => {
       challengeNameElement.textContent = data.challengeName;

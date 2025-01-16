@@ -13,7 +13,6 @@
     <!-- AWS SDK and Cognito Identity Imports -->
     <script src="https://sdk.amazonaws.com/js/aws-sdk-2.1241.0.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/amazon-cognito-identity-js@6.2.0/dist/amazon-cognito-identity.min.js"></script>
-
   </head>
   <body>
     <!-- Navbar -->
@@ -28,8 +27,8 @@
     <section class="profile">
       <div class="profile-header">
         <div class="container-info-user">
-          <h1 id="username">User123</h1>
-          <p id="user-points">53 <span class="diamond">💎</span></p>
+          <h1 id="username"></h1>
+          <p id="user-points">222<span class="diamond">💎</span></p>
         </div>
       </div>
 
@@ -45,6 +44,6 @@
     <script type="module" src="../../public/utils.js"></script>
     <script type="module" src="../../components/navbar/index.js"></script>
     <script src="../../components/loader/loader.js"></script>
-    <script src="profile.js"></script>
+    <script type="module" src="./profile.js"></script>
   </body>
 </html>

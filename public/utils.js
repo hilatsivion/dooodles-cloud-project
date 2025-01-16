@@ -1,3 +1,16 @@
+const API_BASE_URL =
+  "https://17v5i6rril.execute-api.us-east-1.amazonaws.com/Prod";
+
+getDailyChallengeTitle();
+
+// Function to check if the stored challenge is from today
+function isNewDay() {
+  const lastFetchDate = sessionStorage.getItem("dailyChallengeDate");
+  const today = new Date().toLocaleDateString();
+
+  return lastFetchDate !== today;
+}
+
 function login() {
   // const loginUrl = `https://us-east-1qiuvxugwi.auth.us-east-1.amazoncognito.com/login?client_id=7m59qe2baupre61mo36mbbvi5q&response_type=token&scope=aws.cognito.signin.user.admin+email+openid+profile&redirect_uri=https%3A%2F%2Fdoodles-website-bucket.s3.us-east-1.amazonaws.com%2Fpages%2FhomePage%2Findex.html`;
   const loginUrl = `https://us-east-1qiuvxugwi.auth.us-east-1.amazoncognito.com/login?client_id=7m59qe2baupre61mo36mbbvi5q&response_type=token&scope=aws.cognito.signin.user.admin+email+openid+profile&redirect_uri=http://localhost:5500/pages/homePage/index.html`;
@@ -20,6 +33,40 @@ function logout() {
   setTimeout(() => {
     location.reload();
   }, 500);
+}
+
+// get daily challenge title
+// Fetch daily challenge if not stored or if the day has changed
+function getDailyChallengeTitle() {
+  const storedChallenge = sessionStorage.getItem("dailyChallengeTitle");
+
+  if (!storedChallenge || isNewDay()) {
+    // Fetch a new challenge if none exists or if it's a new day
+    fetch(`${API_BASE_URL}/Challenge/Today`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    })
+      .then((response) => response.json())
+      .then((challengeData) => {
+        const dailyChallengeTitle =
+          challengeData.challenge?.Description || "Current Challenge";
+
+        // Save the challenge title and the current date in sessionStorage
+        sessionStorage.setItem("dailyChallengeTitle", dailyChallengeTitle);
+        sessionStorage.setItem(
+          "dailyChallengeDate",
+          new Date().toLocaleDateString()
+        );
+
+        console.log("Fetched new daily challenge:", dailyChallengeTitle);
+      })
+      .catch((err) => {
+        console.error("Error fetching challenge data:", err);
+        alert("Failed to load challenge data. Please try again.");
+      });
+  }
 }
 
 function parseTokens() {
@@ -75,9 +122,6 @@ function logTokens() {
   console.log("Username:", sessionStorage.getItem("username"));
   console.log("Is Admin:", sessionStorage.getItem("isAdmin"));
 }
-
-const API_BASE_URL =
-  "https://17v5i6rril.execute-api.us-east-1.amazonaws.com/Prod";
 
 export {
   login,

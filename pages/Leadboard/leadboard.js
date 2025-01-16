@@ -3,26 +3,28 @@ import { API_BASE_URL } from "../../public/utils.js";
 document.addEventListener("DOMContentLoaded", () => {
   showLoader();
 
-  // Fetch the daily challenge only
-  fetch(`${API_BASE_URL}/Challenge/Today`, {
-    method: "GET",
-    headers: {
-      "Content-Type": "application/json",
-    },
-  })
-    .then((response) => response.json())
-    .then((challengeData) => {
-      const challengeName = document.getElementById("challenge-name");
+  const challengeName = document.getElementById("challenge-name");
+  challengeName.textContent = sessionStorage.getItem("dailyChallengeTitle");
 
-      // Update the daily challenge name
-      challengeName.textContent =
-        challengeData.challenge?.Description || "Current Challenge";
+  //   // Fetch the daily challenge only
+  //   fetch(`${API_BASE_URL}/`, {
+  //     method: "GET",
+  //     headers: {
+  //       "Content-Type": "application/json",
+  //     },
+  //     .then((challengeData) => {
+  //   })
+  //     .then((response) => response.json())
 
-      hideLoader();
-    })
-    .catch((err) => {
-      console.error("Error fetching challenge data:", err);
-      alert("Failed to load challenge data. Please try again.");
-      hideLoader();
-    });
+  //       // Update the daily challenge name
+  //       challengeName.textContent =
+  //         challengeData.challenge?.Description || "Current Challenge";
+
+  //       hideLoader();
+  //     })
+  //     .catch((err) => {
+  //       console.error("Error fetching challenge data:", err);
+  //       alert("Failed to load challenge data. Please try again.");
+  //       hideLoader();
+  //     });
 });
