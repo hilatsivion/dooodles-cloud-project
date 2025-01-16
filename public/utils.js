@@ -49,12 +49,16 @@ function getDailyChallengeTitle() {
       },
     })
       .then((response) => response.json())
-      .then((challengeData) => {
+      .then((data) => {
+        const challengeData = JSON.parse(data.body);
+
         const dailyChallengeTitle =
           challengeData.challenge?.Description || "Current Challenge";
+        const dailyChallengeId = challengeData.challenge?.ChallengeId;
 
         // Save the challenge title and the current date in sessionStorage
         sessionStorage.setItem("dailyChallengeTitle", dailyChallengeTitle);
+        sessionStorage.setItem("dailyChallengeId", dailyChallengeId);
         sessionStorage.setItem(
           "dailyChallengeDate",
           new Date().toLocaleDateString()

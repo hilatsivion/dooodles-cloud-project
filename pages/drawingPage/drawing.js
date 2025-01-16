@@ -1,7 +1,7 @@
 import { API_BASE_URL } from "../../public/utils.js";
+
 document.addEventListener("DOMContentLoaded", () => {
   const challengeNameElement = document.getElementById("challenge-name");
-  const drawingChallengeTitle = document.getElementById("drawing-challenge");
 
   const startButton = document.getElementById("start-button");
   const preStartDrawingSection = document.querySelector(".pre-start-drawing");
@@ -13,6 +13,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const eraserButton = document.getElementById("eraser");
   const clearButton = document.getElementById("clear");
   const colorPicker = document.getElementById("color-picker");
+  const challengeName = sessionStorage.getItem("dailyChallengeTitle");
 
   let lastX = null;
   let lastY = null;
@@ -24,22 +25,14 @@ document.addEventListener("DOMContentLoaded", () => {
   let hue = 0;
   let lastDotTime = 0;
 
-  fetch(`${API_BASE_URL}`)
-    .then((response) => response.json())
-    .then((data) => {
-      challengeNameElement.textContent = data.challengeName;
-      drawingChallengeTitle.textContent = data.challengeName;
-    })
-    .catch((err) => {
-      console.error("Error fetching challenge:", err);
-      challengeNameElement.textContent = "Failed to load challenge";
-    });
+  challengeNameElement.textContent = challengeName;
 
   startButton.addEventListener("click", () => {
     preStartDrawingSection.style.opacity = "0";
     preStartDrawingSection.style.display = "none";
     drawingSection.style.display = "flex";
     drawingSection.style.opacity = "1";
+    document.getElementById("title-challenge-2").textContent = challengeName;
   });
 
   document.getElementById("save").addEventListener("click", saveDrawing);
@@ -147,24 +140,37 @@ document.addEventListener("DOMContentLoaded", () => {
     lastY = y;
   }
 
-  // save the drawing to db
+  // Save the drawing to the database
   function saveDrawing() {
     const image = canvas.toDataURL("image/png");
-    const challengeName = document.getElementById("challenge-name").textContent;
-    const username = localStorage.getItem("username");
+    const idToken = sessionStorage.getItem("idToken");
+    const challengeId = sessionStorage.getItem("dailyChallengeId");
 
-    fetch("/api/dailyChallenge/saveDrawing", {
+    // Validate required data
+    if (!idToken || !challengeId) {
+      alert("User is not authenticated or challenge ID is missing.");
+      return;
+    }
+
+    fetch(`${API_BASE_URL}/Doodles/SaveDoodle`, {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
+      headers: {
+        "Content-Type": "application/json",
+      },
       body: JSON.stringify({
-        username: username,
-        challengeName: challengeName,
-        imageBase64: image.replace(/^data:image\/png;base64,/, ""),
+        idToken: idToken, // Authentication token
+        challengeId: challengeId, // Challenge ID
+        imageData: image.replace(/^data:image\/png;base64,/, ""), // Clean Base64 image data
       }),
     })
-      .then((response) => response.json())
-      .then(() => {
-        // Drawing saved successfully!
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+        return response.json();
+      })
+      .then((data) => {
+        console.log("Drawing saved successfully:", data);
         showPopup();
         window.location.href = "../homePage";
       })
