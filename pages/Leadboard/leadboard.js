@@ -4,27 +4,54 @@ document.addEventListener("DOMContentLoaded", () => {
   showLoader();
 
   const challengeName = document.getElementById("challenge-name");
-  challengeName.textContent = sessionStorage.getItem("dailyChallengeTitle");
+  const leaderboardContainer = document.getElementById("leaderboard-container");
 
-  //   // Fetch the daily challenge only
-  //   fetch(`${API_BASE_URL}/`, {
-  //     method: "GET",
-  //     headers: {
-  //       "Content-Type": "application/json",
-  //     },
-  //     .then((challengeData) => {
-  //   })
-  //     .then((response) => response.json())
+  // Set the daily challenge title from sessionStorage
+  challengeName.textContent =
+    sessionStorage.getItem("dailyChallengeTitle") || "Current Challenge";
 
-  //       // Update the daily challenge name
-  //       challengeName.textContent =
-  //         challengeData.challenge?.Description || "Current Challenge";
+  const challengeId = sessionStorage.getItem("challengeId");
 
-  //       hideLoader();
-  //     })
-  //     .catch((err) => {
-  //       console.error("Error fetching challenge data:", err);
-  //       alert("Failed to load challenge data. Please try again.");
-  //       hideLoader();
-  //     });
+  // Fetch the Top 5 Users
+  fetch(`${API_BASE_URL}/Challenge/Top5Users`, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+    },
+  })
+    .then((response) => {
+      if (!response.ok) {
+        throw new Error(`HTTP error! Status: ${response.status}`);
+      }
+      return response.json();
+    })
+    .then((topUsersData) => {
+      console.log("Top 5 Users Data:", topUsersData);
+
+      // Clear the leaderboard container
+      leaderboardContainer.innerHTML = "";
+
+      // Check if data exists and loop through top 5 users
+      if (topUsersData && topUsersData.length > 0) {
+        topUsersData.forEach((user, index) => {
+          const userItem = document.createElement("div");
+          userItem.classList.add("leaderboard-item");
+
+          userItem.innerHTML = `
+            <div class="username">${user.username}</div>
+          `;
+
+          leaderboardContainer.appendChild(userItem);
+        });
+      } else {
+        leaderboardContainer.innerHTML = "<p>No top users found.</p>";
+      }
+
+      hideLoader();
+    })
+    .catch((err) => {
+      console.error("Error fetching top users:", err);
+      alert("Failed to load leaderboard. Please try again.");
+      hideLoader();
+    });
 });
