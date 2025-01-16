@@ -11,17 +11,16 @@ function signup() {
 }
 
 function logout() {
-  clearTokens(); 
+  clearTokens();
   const logoutUrl = `${COGNITO_CONFIG.domain}/logout?client_id=${
     COGNITO_CONFIG.clientId
   }&logout_uri=${encodeURIComponent(COGNITO_CONFIG.redirectUri)}`;
 
   window.location.href = logoutUrl;
   setTimeout(() => {
-    location.reload(); 
-  }, 500); 
+    location.reload();
+  }, 500);
 }
-
 
 function parseTokens() {
   console.log("Parsing tokens...");
@@ -35,8 +34,10 @@ function parseTokens() {
 
     const tokenPayload = decodeToken(idToken);
     if (tokenPayload) {
-      const username = tokenPayload["cognito:username"] || tokenPayload.email || "User";
-      const isAdmin = tokenPayload["cognito:groups"]?.includes("Admin") || false;
+      const username =
+        tokenPayload["cognito:username"] || tokenPayload.email || "User";
+      const isAdmin =
+        tokenPayload["cognito:groups"]?.includes("Admin") || false;
 
       sessionStorage.setItem("username", username);
       sessionStorage.setItem("isAdmin", isAdmin);
@@ -48,7 +49,6 @@ function parseTokens() {
   }
   return null;
 }
-
 
 function isLoggedIn() {
   return Boolean(sessionStorage.getItem("idToken"));
@@ -76,4 +76,16 @@ function logTokens() {
   console.log("Is Admin:", sessionStorage.getItem("isAdmin"));
 }
 
-export { login, signup, logout, parseTokens, isLoggedIn, clearTokens, decodeToken };
+const API_BASE_URL =
+  "https://17v5i6rril.execute-api.us-east-1.amazonaws.com/Prod";
+
+export {
+  login,
+  signup,
+  logout,
+  parseTokens,
+  isLoggedIn,
+  clearTokens,
+  decodeToken,
+  API_BASE_URL,
+};

@@ -2,8 +2,17 @@ document.addEventListener("DOMContentLoaded", () => {
   showLoader();
   const loggedInUser = localStorage.getItem("username");
 
-  // get the user that is logged in and saved in the localStorage
-  fetch(`/api/profile/getUserData?username=${loggedInUser}`)
+  // Send a POST request with the logged-in user's username
+  fetch(
+    `https://17v5i6rril.execute-api.us-east-1.amazonaws.com/Prod/Doodles/UserId`,
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ idToken: sessionStorage.getItem("idToken") }), // Sending the username in the request body
+    }
+  )
     .then((response) => response.json())
     .then((data) => {
       const usernameElement = document.getElementById("username");
