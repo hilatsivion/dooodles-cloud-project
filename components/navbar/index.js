@@ -1,11 +1,17 @@
 // Import Cognito utility functions
-import { login, signup, logout, parseTokens, isLoggedIn } from "../../public/utils.js";
+import {
+  login,
+  signup,
+  logout,
+  parseTokens,
+  isLoggedIn,
+} from "../../public/utils.js";
 
 document.addEventListener("DOMContentLoaded", function () {
   const navbarContainer = document.getElementById("navbar-container");
 
   // Call parseTokens to ensure session storage is populated
-  parseTokens();
+  if (!isLoggedIn()) parseTokens();
 
   // Check if the user is logged in
   const loggedIn = isLoggedIn();
