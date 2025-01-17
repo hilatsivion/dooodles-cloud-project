@@ -9,25 +9,33 @@ function loadUsers() {
   fetch(`${API_BASE_URL}/AllUsers?idToken=${idToken}`)
     .then((response) => response.json())
     .then((data) => {
-      if (data.users) {
-        users = data.users;
+      // Parse the body if it's a string
+      const responseBody =
+        typeof data.body === "string" ? JSON.parse(data.body) : data.body;
+
+      if (responseBody.users) {
+        users = responseBody.users;
+        console.log(users);
+
         const tbody = document.querySelector("#userTable tbody");
         tbody.innerHTML = "";
+
         users.forEach((user, index) => {
           tbody.innerHTML += `
-            <tr>
-              <td>${user.email}</td>
-              <td>${user.username}</td>
-              <td>${user.birthdate}</td>
-              <td>${user.score || 0}</td>
-              <td>${user.drawings || 0}</td>
-              <td><button class="edit-btn" onclick="editRow(${index})">Edit</button></td>
-            </tr>
-          `;
+          <tr>
+            <td>${user.Email}</td>
+            <td>${user.Username}</td>
+            <td>${user.Birthdate || "N/A"}</td>
+            <td>${user.TotalScore || 0}</td>
+            <td>${user.Doodles ? user.Doodles.length : 0}</td>
+            <td><button class="edit-btn" onclick="editRow(${index})">Edit</button></td>
+          </tr>
+        `;
         });
       } else {
         alert("Failed to load users. Please try again.");
       }
+
       hideLoader();
     })
     .catch((err) => {

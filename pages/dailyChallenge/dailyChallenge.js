@@ -1,38 +1,65 @@
+import { API_BASE_URL } from "../../public/utils.js";
 document.addEventListener("DOMContentLoaded", () => {
   showLoader();
 
-  // get all drawings in the current challenge
-  fetch("/api/dailyChallenge/getDrawings")
+  const challengeNameElement = document.getElementById("challenge-name");
+  const drawingGallery = document.querySelector(".drawing-gallery");
+  const loggedInUser = localStorage.getItem("username");
+
+  // Set the daily challenge title from sessionStorage
+  const storedChallengeName =
+    sessionStorage.getItem("dailyChallengeTitle") || "Current Challenge";
+  challengeNameElement.textContent = storedChallengeName;
+
+  // Fetch all drawings for the current challenge
+  fetch(`${API_BASE_URL}/Challenge/Today`)
     .then((response) => response.json())
     .then((data) => {
-      const challengeName = document.getElementById("challenge-name");
-      const drawingGallery = document.querySelector(".drawing-gallery");
-      const loggedInUser = localStorage.getItem("username");
+      const challengeData =
+        typeof data.body === "string" ? JSON.parse(data.body) : data.body;
+      console.log("====================================");
+      console.log(challengeData);
+      console.log("====================================");
+      // Update the challenge title with the latest one from the server if available
+      if (challengeData.challenge && challengeData.challenge.Description) {
+        challengeNameElement.textContent = challengeData.challenge.Description;
+      }
 
-      challengeName.textContent = data.challengeName || "Current Challenge";
+      const participants = challengeData.challenge.Participants;
 
-      data.drawings.forEach((drawing) => {
-        const card = document.createElement("div");
-        card.classList.add("drawing-card");
+      if (participants && participants.length > 0) {
+        participants.forEach((participant) => {
+          const card = document.createElement("div");
+          card.classList.add("drawing-card");
 
-        const isRated = drawing.ratedBy.includes(loggedInUser);
+          const isRated =
+            participant.ratedBy && participant.ratedBy.includes(loggedInUser);
 
-        card.innerHTML = `
-          <img src="${drawing.imageUrl}" alt="Drawing by ${
-          drawing.username
-        }" class="drawing-img" />
-          <div class="flex-space">
-            <div class="username">${drawing.username}</div>
-            <button class="rate-btn" data-username="${drawing.username}" ${
-          isRated
-            ? 'disabled style="background-color: grey; cursor: not-allowed;"'
-            : ""
-        }>${isRated ? "Rated" : "Rate"}</button>
-          </div>
-        `;
+          card.innerHTML = `
+            <img src="${participant.Location}" alt="Drawing by ${
+            participant.Username || "Unknown"
+          }" class="drawing-img" />
+            <div class="flex-space">
+              <div class="username">${participant.Username || "Anonymous"}</div>
+              <button class="rate-btn" data-username="${
+                participant.Username
+              }" ${
+            isRated
+              ? 'disabled style="background-color: grey; cursor: not-allowed;"'
+              : ""
+          }>
+                ${isRated ? "Rated" : "Rate"}
+              </button>
+            </div>
+          `;
 
-        drawingGallery.appendChild(card);
-      });
+          drawingGallery.appendChild(card);
+        });
+      } else {
+        drawingGallery.innerHTML =
+          "<p>No drawings found for this challenge.</p>";
+      }
+
       hideLoader();
       enableRating();
     })
@@ -43,7 +70,7 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 });
 
-// enable rating only if the user is logged in and the user not rated the drwaing already
+// Enable rating only if the user is logged in and hasn't rated the drawing
 function enableRating() {
   const rateButtons = document.querySelectorAll(".rate-btn");
   const popup = document.getElementById("popup");
@@ -58,7 +85,9 @@ function enableRating() {
   rateButtons.forEach((button) => {
     button.addEventListener("click", () => {
       selectedUsername = button.getAttribute("data-username");
-      popupImg.src = button.previousElementSibling.src;
+      popupImg.src = button
+        .closest(".drawing-card")
+        .querySelector(".drawing-img").src;
       popup.style.display = "flex";
       overlay.style.display = "block";
     });
@@ -72,7 +101,6 @@ function enableRating() {
     const rating = ratingSlider.value;
     const loggedInUser = localStorage.getItem("username");
 
-    // send to server the rate of the drawing by the logged user
     fetch("/api/dailyChallenge/rateDrawing", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -84,10 +112,9 @@ function enableRating() {
     })
       .then((response) => response.json())
       .then(() => {
-        // Rating submitted!
         popup.style.display = "none";
         overlay.style.display = "none";
-        location.reload(); // Refresh to update rated state
+        location.reload(); // Refresh to update the rated state
       })
       .catch((err) => {
         console.error("Error submitting rating:", err);

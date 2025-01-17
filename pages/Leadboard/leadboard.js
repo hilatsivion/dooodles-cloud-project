@@ -10,10 +10,10 @@ document.addEventListener("DOMContentLoaded", () => {
   challengeName.textContent =
     sessionStorage.getItem("dailyChallengeTitle") || "Current Challenge";
 
-  const challengeId = sessionStorage.getItem("challengeId");
+  const challengeId = sessionStorage.getItem("dailyChallengeId");
 
   // Fetch the Top 5 Users
-  fetch(`${API_BASE_URL}/Challenge/Top5Users`, {
+  fetch(`${API_BASE_URL}/Challenge/Top5Users?challengeId=${challengeId}`, {
     method: "GET",
     headers: {
       "Content-Type": "application/json",
@@ -25,8 +25,13 @@ document.addEventListener("DOMContentLoaded", () => {
       }
       return response.json();
     })
-    .then((topUsersData) => {
-      console.log("Top 5 Users Data:", topUsersData);
+    .then((data) => {
+      console.log("Top 5 Users Data:", data);
+
+      // Parse the body if it's a string
+      const responseBody =
+        typeof data.body === "string" ? JSON.parse(data.body) : data.body;
+      const topUsersData = responseBody.topUsers;
 
       // Clear the leaderboard container
       leaderboardContainer.innerHTML = "";
@@ -38,8 +43,10 @@ document.addEventListener("DOMContentLoaded", () => {
           userItem.classList.add("leaderboard-item");
 
           userItem.innerHTML = `
-            <div class="username">${user.username}</div>
-          `;
+          <div class="place">${user.Place}</div>
+          <div class="username">${user.userEmail}</div>
+          <div class="place">${user.Place}</div>
+        `;
 
           leaderboardContainer.appendChild(userItem);
         });
