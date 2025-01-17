@@ -43,12 +43,20 @@ function logout() {
   // }&logout_uri=${encodeURIComponent(COGNITO_CONFIG.redirectUri)}`;
   const logoutUrl = "//localhost:5500/pages/homePage/index.html";
 =======
+=======
+>>>>>>> Stashed changes
   // Clear local storage/session data
   localStorage.removeItem("idToken");
   localStorage.removeItem("accessToken");
   localStorage.removeItem("refreshToken");
   localStorage.removeItem("username");
   sessionStorage.clear();
+<<<<<<< Updated upstream
+=======
+
+  // Redirect to Cognito logout URL
+  const logoutUrl = `https://us-east-1qiuvxugwi.auth.us-east-1.amazoncognito.com/logout?client_id=7m59qe2baupre61mo36mbbvi5q&logout_uri=http://localhost:5500/pages/homePage/index.html`;
+>>>>>>> Stashed changes
 
   // Redirect to Cognito logout URL
   const logoutUrl = `https://us-east-1qiuvxugwi.auth.us-east-1.amazoncognito.com/logout?client_id=7m59qe2baupre61mo36mbbvi5q&logout_uri=http://localhost:5500/pages/homePage/index.html`;
