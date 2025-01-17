@@ -23,46 +23,16 @@ function signup() {
   window.location.href = signupUrl;
 }
 
-// function logout() {
-//   clearTokens();
-//   const logoutUrl = `${COGNITO_CONFIG.domain}/logout?client_id=${
-//     COGNITO_CONFIG.clientId
-//   }&logout_uri=${encodeURIComponent(COGNITO_CONFIG.redirectUri)}`;
-
-//   window.location.href = logoutUrl;
-//   setTimeout(() => {
-//     location.reload();
-//   }, 500);
-// }
-
 function logout() {
   clearTokens();
-<<<<<<< Updated upstream
   // const logoutUrl = `${COGNITO_CONFIG.domain}/logout?client_id=${
   //   COGNITO_CONFIG.clientId
   // }&logout_uri=${encodeURIComponent(COGNITO_CONFIG.redirectUri)}`;
   const logoutUrl = "//localhost:5500/pages/homePage/index.html";
-=======
-=======
->>>>>>> Stashed changes
-  // Clear local storage/session data
-  localStorage.removeItem("idToken");
-  localStorage.removeItem("accessToken");
-  localStorage.removeItem("refreshToken");
-  localStorage.removeItem("username");
-  sessionStorage.clear();
-<<<<<<< Updated upstream
-=======
-
-  // Redirect to Cognito logout URL
-  const logoutUrl = `https://us-east-1qiuvxugwi.auth.us-east-1.amazoncognito.com/logout?client_id=7m59qe2baupre61mo36mbbvi5q&logout_uri=http://localhost:5500/pages/homePage/index.html`;
->>>>>>> Stashed changes
-
-  // Redirect to Cognito logout URL
-  const logoutUrl = `https://us-east-1qiuvxugwi.auth.us-east-1.amazoncognito.com/logout?client_id=7m59qe2baupre61mo36mbbvi5q&logout_uri=http://localhost:5500/pages/homePage/index.html`;
-
->>>>>>> Stashed changes
   window.location.href = logoutUrl;
+  setTimeout(() => {
+    location.reload();
+  }, 500);
 }
 
 // get daily challenge title
