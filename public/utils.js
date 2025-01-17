@@ -37,11 +37,14 @@ function signup() {
 
 function logout() {
   clearTokens();
-  const logoutUrl = `${COGNITO_CONFIG.domain}/logout?client_id=${
-    COGNITO_CONFIG.clientId
-  }&logout_uri=${encodeURIComponent(COGNITO_CONFIG.redirectUri)}`;
-
+  // const logoutUrl = `${COGNITO_CONFIG.domain}/logout?client_id=${
+  //   COGNITO_CONFIG.clientId
+  // }&logout_uri=${encodeURIComponent(COGNITO_CONFIG.redirectUri)}`;
+  const logoutUrl = "//localhost:5500/pages/homePage/index.html";
   window.location.href = logoutUrl;
+  setTimeout(() => {
+    location.reload();
+  }, 500);
 }
 
 // get daily challenge title
