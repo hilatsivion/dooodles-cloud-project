@@ -32,8 +32,10 @@ document.addEventListener("DOMContentLoaded", () => {
 
       // Set user's profile information
       usernameElement.textContent = username;
-      userPointsElement.innerHTML = `${userData.Points} <span class="diamond">💎</span>`;
-
+      userPointsElement.innerHTML = `${userData.Doodles.Score} <span class="diamond">💎</span>`;
+      console.log("====================================");
+      console.log(userData);
+      console.log("====================================");
       if (userData.Doodles && userData.Doodles.length > 0) {
         noDoodlesMessage.style.display = "none";
 
