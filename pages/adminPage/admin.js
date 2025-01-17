@@ -1,27 +1,33 @@
+import { API_BASE_URL } from "../../public/utils.js";
 let users = [];
 let currentEditingRow = null; // Track the currently editing row
 
 // load all users to the table
 function loadUsers() {
   showLoader();
-  fetch("/api/admin/getUsers")
+  const idToken = sessionStorage.getItem("idToken");
+  fetch(`${API_BASE_URL}/AllUsers?idToken=${idToken}`)
     .then((response) => response.json())
     .then((data) => {
-      users = data;
-      const tbody = document.querySelector("#userTable tbody");
-      tbody.innerHTML = "";
-      users.forEach((user, index) => {
-        tbody.innerHTML += `
-          <tr>
-            <td>${user.email}</td>
-            <td>${user.username}</td>
-            <td>${user.birthdate}</td>
-            <td>${user.score}</td>
-            <td>${user.drawings}</td>
-            <td><button class="edit-btn" onclick="editRow(${index})">Edit</button></td>
-          </tr>
-        `;
-      });
+      if (data.users) {
+        users = data.users;
+        const tbody = document.querySelector("#userTable tbody");
+        tbody.innerHTML = "";
+        users.forEach((user, index) => {
+          tbody.innerHTML += `
+            <tr>
+              <td>${user.email}</td>
+              <td>${user.username}</td>
+              <td>${user.birthdate}</td>
+              <td>${user.score || 0}</td>
+              <td>${user.drawings || 0}</td>
+              <td><button class="edit-btn" onclick="editRow(${index})">Edit</button></td>
+            </tr>
+          `;
+        });
+      } else {
+        alert("Failed to load users. Please try again.");
+      }
       hideLoader();
     })
     .catch((err) => {
