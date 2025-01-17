@@ -26,12 +26,11 @@ document.addEventListener("DOMContentLoaded", () => {
       return response.json();
     })
     .then((data) => {
-      console.log("Top 5 Users Data:", data);
-
       // Parse the body if it's a string
       const responseBody =
         typeof data.body === "string" ? JSON.parse(data.body) : data.body;
       const topUsersData = responseBody.topUsers;
+      console.log("Top 5 Users Data:", topUsersData);
 
       // Clear the leaderboard container
       leaderboardContainer.innerHTML = "";
@@ -44,7 +43,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
           userItem.innerHTML = `
           <div class="place">${user.Place}</div>
-          <div class="username">${user.userEmail}</div>
+          <div class="username">${user.Username}</div>
           <div class="place">${user.Place}</div>
         `;
 

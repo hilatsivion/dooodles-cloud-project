@@ -5,7 +5,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
   const challengeNameElement = document.getElementById("challenge-name");
   const drawingGallery = document.querySelector(".drawing-gallery");
-  const username = sessionStorage.getItem("username");
+  const username = sessionStorage.getItem("username"); // Check if user is logged in
+  const isLoggedIn = !!username; // Convert to boolean
 
   // Set the daily challenge title from sessionStorage
   const storedChallengeName =
@@ -19,7 +20,7 @@ document.addEventListener("DOMContentLoaded", () => {
       const challengeData =
         typeof data.body === "string" ? JSON.parse(data.body) : data.body;
 
-      // Update the challenge title with the latest one from the server if available
+      // Update the challenge title if available
       if (challengeData.challenge && challengeData.challenge.Description) {
         challengeNameElement.textContent = challengeData.challenge.Description;
       }
@@ -37,7 +38,7 @@ document.addEventListener("DOMContentLoaded", () => {
           const isOwnDrawing =
             participant.Username && participant.Username === username;
 
-          const isDisabled = isRated || isOwnDrawing;
+          const isDisabled = !isLoggedIn || isRated || isOwnDrawing;
 
           card.innerHTML = `
             <img src="${participant.Location}" alt="Drawing by ${
@@ -52,7 +53,15 @@ document.addEventListener("DOMContentLoaded", () => {
               ? 'disabled style="background-color: #B9B2B0; cursor: not-allowed;"'
               : ""
           }>
-                ${isOwnDrawing ? "Your Drawing" : isRated ? "Rated" : "Rate"}
+                ${
+                  !isLoggedIn
+                    ? "Log in to Rate"
+                    : isOwnDrawing
+                    ? "Your Drawing"
+                    : isRated
+                    ? "Rated"
+                    : "Rate"
+                }
               </button>
             </div>
           `;
@@ -84,10 +93,11 @@ function enableRating() {
   const sliderValue = document.getElementById("slider-value");
   const saveButton = document.getElementById("save-btn");
   const cancelButton = document.getElementById("cancel-btn");
+  const username = sessionStorage.getItem("username");
   let selectedUsername = "";
 
   rateButtons.forEach((button) => {
-    if (!button.disabled) {
+    if (!button.disabled && username) {
       button.addEventListener("click", () => {
         selectedUsername = button.getAttribute("data-username");
         popupImg.src = button
@@ -105,7 +115,6 @@ function enableRating() {
 
   saveButton.addEventListener("click", () => {
     const rating = ratingSlider.value;
-    const username = localStorage.getItem("username");
 
     fetch("/api/dailyChallenge/rateDrawing", {
       method: "POST",
@@ -129,8 +138,8 @@ function enableRating() {
   });
 
   cancelButton.addEventListener("click", () => {
-    document.getElementById("rating-slider").value = 0;
-    document.getElementById("slider-value").innerHTML = 0;
+    document.getElementById("rating-slider").value = 1;
+    document.getElementById("slider-value").innerHTML = 1;
     popup.style.display = "none";
     overlay.style.display = "none";
   });

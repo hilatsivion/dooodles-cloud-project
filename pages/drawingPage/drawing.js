@@ -1,4 +1,30 @@
 import { API_BASE_URL } from "../../public/utils.js";
+const idToken = sessionStorage.getItem("idToken");
+var alreadyPlay;
+
+// get true if user alrady palyed in this challenge, false otherwise
+fetch(`${API_BASE_URL}/User/ParticipatedInChallenge`, {
+  method: "POST",
+  headers: {
+    "Content-Type": "application/json",
+  },
+  body: JSON.stringify({ idToken: idToken }),
+})
+  .then((response) => response.json())
+  .then((data) => {
+    const responseBody =
+      typeof data.body === "string" ? JSON.parse(data.body) : data.body;
+
+    if (responseBody.participated === true) {
+      alreadyPlay = true;
+    } else {
+      alreadyPlay = false;
+    }
+  })
+  .catch((err) => {
+    console.error("Error checking participation:", err);
+    alert("Failed to check participation. Please try again.");
+  });
 
 document.addEventListener("DOMContentLoaded", () => {
   const challengeNameElement = document.getElementById("challenge-name");
@@ -32,11 +58,15 @@ document.addEventListener("DOMContentLoaded", () => {
   challengeNameElement.textContent = challengeName;
 
   startButton.addEventListener("click", () => {
-    preStartDrawingSection.style.opacity = "0";
-    preStartDrawingSection.style.display = "none";
-    drawingSection.style.display = "flex";
-    drawingSection.style.opacity = "1";
-    document.getElementById("title-challenge-2").textContent = challengeName;
+    if (!alreadyPlay) {
+      preStartDrawingSection.style.opacity = "0";
+      preStartDrawingSection.style.display = "none";
+      drawingSection.style.display = "flex";
+      drawingSection.style.opacity = "1";
+      document.getElementById("title-challenge-2").textContent = challengeName;
+    } else {
+      showPopupCantDraw();
+    }
   });
 
   // Open confirmation popup when clicking save
@@ -210,12 +240,31 @@ function showPopupSuccess() {
   cancelButton.addEventListener("click", () => {
     popup.style.display = "none";
     overlay.style.display = "none";
-    window.location.href = "../homePage/index.html"; // Redirect after closing success popup
+    window.location.href = "../profilePage/index.html"; // Redirect after closing success popup
   });
 
   overlay.addEventListener("click", () => {
     popup.style.display = "none";
     overlay.style.display = "none";
-    window.location.href = "../homePage/index.html"; // Redirect after closing success popup
+    window.location.href = "../profilePage/index.html"; // Redirect after closing success popup
+  });
+}
+// Show cant draw Popup
+function showPopupCantDraw() {
+  const popup = document.getElementById("popup-no-draw");
+  const overlay = document.getElementById("overlay");
+  const cancelButton = document.getElementById("cancel-btn-0");
+
+  popup.style.display = "flex";
+  overlay.style.display = "block";
+
+  cancelButton.addEventListener("click", () => {
+    popup.style.display = "none";
+    overlay.style.display = "none";
+  });
+
+  overlay.addEventListener("click", () => {
+    popup.style.display = "none";
+    overlay.style.display = "none";
   });
 }

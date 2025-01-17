@@ -6,31 +6,36 @@ let currentEditingRow = null; // Track the currently editing row
 function loadUsers() {
   showLoader();
   const idToken = sessionStorage.getItem("idToken");
+
   fetch(`${API_BASE_URL}/AllUsers?idToken=${idToken}`)
     .then((response) => response.json())
     .then((data) => {
-      // Parse the body if it's a string
       const responseBody =
         typeof data.body === "string" ? JSON.parse(data.body) : data.body;
 
       if (responseBody.users) {
         users = responseBody.users;
-        console.log(users);
 
         const tbody = document.querySelector("#userTable tbody");
         tbody.innerHTML = "";
 
         users.forEach((user, index) => {
-          tbody.innerHTML += `
-          <tr>
+          const row = document.createElement("tr");
+          row.innerHTML = `
             <td>${user.Email}</td>
             <td>${user.Username}</td>
             <td>${user.Birthdate || "N/A"}</td>
             <td>${user.TotalScore || 0}</td>
             <td>${user.Doodles ? user.Doodles.length : 0}</td>
-            <td><button class="edit-btn" onclick="editRow(${index})">Edit</button></td>
-          </tr>
-        `;
+            <td><button class="edit-btn">Edit</button></td>
+          `;
+
+          tbody.appendChild(row);
+
+          // Add event listener for the Edit button
+          row.querySelector(".edit-btn").addEventListener("click", () => {
+            editRow(index);
+          });
         });
       } else {
         alert("Failed to load users. Please try again.");
