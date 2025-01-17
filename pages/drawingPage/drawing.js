@@ -15,6 +15,10 @@ document.addEventListener("DOMContentLoaded", () => {
   const colorPicker = document.getElementById("color-picker");
   const challengeName = sessionStorage.getItem("dailyChallengeTitle");
 
+  const saveButton = document.getElementById("save");
+  const submitButton = document.getElementById("submit-btn");
+  const backEditButton = document.getElementById("back-edit-btn");
+
   let lastX = null;
   let lastY = null;
   let drawing = false;
@@ -35,17 +39,26 @@ document.addEventListener("DOMContentLoaded", () => {
     document.getElementById("title-challenge-2").textContent = challengeName;
   });
 
-  document.getElementById("save").addEventListener("click", saveDrawing);
+  // Open confirmation popup when clicking save
+  saveButton.addEventListener("click", showPopupConfirm);
 
-  // functinallity of canvas
+  // Handle Submit (actual save)
+  submitButton.addEventListener("click", () => {
+    hidePopupConfirm();
+    showLoader();
+    saveDrawing();
+  });
+
+  // Handle Back to Edit button
+  backEditButton.addEventListener("click", hidePopupConfirm);
+
+  // Canvas Drawing Functionality
   canvas.addEventListener("mousedown", () => (drawing = true));
-
   canvas.addEventListener("mouseup", () => {
     drawing = false;
     lastX = null;
     lastY = null;
   });
-
   canvas.addEventListener("mouseleave", () => {
     drawing = false;
     lastX = null;
@@ -79,7 +92,7 @@ document.addEventListener("DOMContentLoaded", () => {
     color = e.target.value;
   });
 
-  // draw on the canvas
+  // Draw on Canvas
   function draw(event) {
     if (!drawing) return;
 
@@ -106,7 +119,6 @@ document.addEventListener("DOMContentLoaded", () => {
       }
     } else if (currentBrush === "dots") {
       ctx.fillStyle = color;
-
       const dotInterval = brushSize * 2;
       const currentTime = Date.now();
 
@@ -119,7 +131,7 @@ document.addEventListener("DOMContentLoaded", () => {
         lastX = x;
         lastY = y;
       }
-    } else if (currentBrush === "line") {
+    } else {
       ctx.strokeStyle = color;
       if (lastX !== null && lastY !== null) {
         ctx.beginPath();
@@ -127,34 +139,21 @@ document.addEventListener("DOMContentLoaded", () => {
         ctx.lineTo(x, y);
         ctx.stroke();
       }
-    } else if (currentBrush === "spray") {
-      ctx.fillStyle = color;
-      for (let i = 0; i < 10; i++) {
-        const offsetX = Math.random() * brushSize - brushSize / 2;
-        const offsetY = Math.random() * brushSize - brushSize / 2;
-        ctx.fillRect(x + offsetX, y + offsetY, 1, 1);
-      }
     }
 
     lastX = x;
     lastY = y;
   }
 
-  // Save the drawing to the database
+  // Save the Drawing to the Database
   function saveDrawing() {
     const image = canvas.toDataURL("image/png");
     const idToken = sessionStorage.getItem("idToken");
     const challengeId = sessionStorage.getItem("dailyChallengeId");
 
-    confetti({
-      particleCount: 100,
-      spread: 70,
-      origin: { y: 0.6 },
-    });
-
-    // Validate required data
     if (!idToken || !challengeId) {
       alert("User is not authenticated or challenge ID is missing.");
+      hideLoader();
       return;
     }
 
@@ -164,45 +163,59 @@ document.addEventListener("DOMContentLoaded", () => {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        idToken: idToken, // Authentication token
-        challengeId: challengeId, // Challenge ID
-        imageData: image.replace(/^data:image\/png;base64,/, ""), // Clean Base64 image data
+        idToken: idToken,
+        challengeId: challengeId,
+        imageData: image.replace(/^data:image\/png;base64,/, ""),
       }),
     })
       .then((response) => {
-        if (!response.ok) {
+        if (!response.ok)
           throw new Error(`HTTP error! Status: ${response.status}`);
-        }
         return response.json();
       })
       .then((data) => {
         console.log("Drawing saved successfully:", data);
-        showPopup();
-        window.location.href = "../homePage";
+        hideLoader();
+        showPopupSuccess();
       })
       .catch((err) => {
         console.error("Error saving drawing:", err);
         alert("Failed to save drawing. Please try again.");
+        hideLoader();
       });
   }
-
-  // show the popup on save successfully
-  function showPopup() {
-    const popup = document.getElementById("popup");
-    const overlay = document.getElementById("overlay");
-    const cancelButton = document.getElementById("cancel-btn");
-
-    popup.style.display = "flex";
-    overlay.style.display = "block";
-
-    cancelButton.addEventListener("click", () => {
-      popup.style.display = "none";
-      overlay.style.display = "none";
-    });
-
-    overlay.addEventListener("click", () => {
-      popup.style.display = "none";
-      overlay.style.display = "none";
-    });
-  }
 });
+
+// Show Confirmation Popup
+function showPopupConfirm() {
+  document.getElementById("popup-2").style.display = "flex";
+  document.getElementById("overlay").style.display = "block";
+}
+
+// Hide Confirmation Popup
+function hidePopupConfirm() {
+  document.getElementById("popup-2").style.display = "none";
+  document.getElementById("overlay").style.display = "none";
+}
+
+// Show Success Popup
+function showPopupSuccess() {
+  const popup = document.getElementById("popup");
+  const overlay = document.getElementById("overlay");
+  const cancelButton = document.getElementById("cancel-btn");
+
+  popup.style.display = "flex";
+  overlay.style.display = "block";
+
+  cancelButton.addEventListener("click", () => {
+    popup.style.display = "none";
+    overlay.style.display = "none";
+    window.location.href = "../homePage/index.html"; // Redirect after closing success popup
+  });
+
+  overlay.addEventListener("click", () => {
+    popup.style.display = "none";
+    overlay.style.display = "none";
+    window.location.href = "../homePage/index.html"; // Redirect after closing success popup
+  });
+}

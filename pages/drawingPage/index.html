@@ -7,6 +7,7 @@
     <title>Dooodles</title>
     <link rel="stylesheet" href="../../public/general.css" />
     <link rel="stylesheet" href="../../components/navbar/style.css" />
+    <link rel="stylesheet" href="../../components/loader/style.css" />
     <link rel="stylesheet" href="./style.css" />
     <link rel="stylesheet" href="./canvas.css" />
 
@@ -17,6 +18,11 @@
   <body>
     <!-- Navbar -->
     <div id="navbar-container"></div>
+
+    <!-- Loader -->
+    <div class="loader-container" id="loader-container">
+      <span class="loader"></span>
+    </div>
 
     <!-- Start Drawing - screen 1 -->
     <section class="pre-start-drawing">
@@ -89,7 +95,7 @@
     <!-- Dark Overlay for Background when Popup is active -->
     <div id="overlay" class="overlay"></div>
 
-    <!-- Popup for Rating -->
+    <!-- Popup for success -->
     <div id="popup" class="popup">
       <div class="popup-content">
         <h2>Drawing saved successfully!</h2>
@@ -100,8 +106,23 @@
       </div>
     </div>
 
+    <!-- Popup for confirm -->
+    <div id="popup-2" class="popup">
+      <div class="popup-content">
+        <h2>Are you sure you want to<br />submit the doodle?</h2>
+
+        <div class="popup-buttons">
+          <button id="submit-btn" class="btn-full popup-btn">Submit</button>
+          <button id="back-edit-btn" class="btn-stroke popup-btn">
+            Back to Edit
+          </button>
+        </div>
+      </div>
+    </div>
+
     <script type="module" src="../../public/utils.js"></script>
     <script type="module" src="../../components/navbar/index.js"></script>
+    <script src="../../components/loader/loader.js"></script>
     <script type="module" src="./drawing.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js"></script>
   </body>
