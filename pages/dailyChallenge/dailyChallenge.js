@@ -1,10 +1,11 @@
 import { API_BASE_URL } from "../../public/utils.js";
+
 document.addEventListener("DOMContentLoaded", () => {
   showLoader();
 
   const challengeNameElement = document.getElementById("challenge-name");
   const drawingGallery = document.querySelector(".drawing-gallery");
-  const loggedInUser = localStorage.getItem("username");
+  const username = sessionStorage.getItem("username");
 
   // Set the daily challenge title from sessionStorage
   const storedChallengeName =
@@ -17,9 +18,7 @@ document.addEventListener("DOMContentLoaded", () => {
     .then((data) => {
       const challengeData =
         typeof data.body === "string" ? JSON.parse(data.body) : data.body;
-      console.log("====================================");
-      console.log(challengeData);
-      console.log("====================================");
+
       // Update the challenge title with the latest one from the server if available
       if (challengeData.challenge && challengeData.challenge.Description) {
         challengeNameElement.textContent = challengeData.challenge.Description;
@@ -33,7 +32,12 @@ document.addEventListener("DOMContentLoaded", () => {
           card.classList.add("drawing-card");
 
           const isRated =
-            participant.ratedBy && participant.ratedBy.includes(loggedInUser);
+            participant.ratedBy && participant.ratedBy.includes(username);
+
+          const isOwnDrawing =
+            participant.Username && participant.Username === username;
+
+          const isDisabled = isRated || isOwnDrawing;
 
           card.innerHTML = `
             <img src="${participant.Location}" alt="Drawing by ${
@@ -44,11 +48,11 @@ document.addEventListener("DOMContentLoaded", () => {
               <button class="rate-btn" data-username="${
                 participant.Username
               }" ${
-            isRated
-              ? 'disabled style="background-color: grey; cursor: not-allowed;"'
+            isDisabled
+              ? 'disabled style="background-color: #B9B2B0; cursor: not-allowed;"'
               : ""
           }>
-                ${isRated ? "Rated" : "Rate"}
+                ${isOwnDrawing ? "Your Drawing" : isRated ? "Rated" : "Rate"}
               </button>
             </div>
           `;
@@ -83,14 +87,16 @@ function enableRating() {
   let selectedUsername = "";
 
   rateButtons.forEach((button) => {
-    button.addEventListener("click", () => {
-      selectedUsername = button.getAttribute("data-username");
-      popupImg.src = button
-        .closest(".drawing-card")
-        .querySelector(".drawing-img").src;
-      popup.style.display = "flex";
-      overlay.style.display = "block";
-    });
+    if (!button.disabled) {
+      button.addEventListener("click", () => {
+        selectedUsername = button.getAttribute("data-username");
+        popupImg.src = button
+          .closest(".drawing-card")
+          .querySelector(".drawing-img").src;
+        popup.style.display = "flex";
+        overlay.style.display = "block";
+      });
+    }
   });
 
   ratingSlider.addEventListener("input", () => {
@@ -99,14 +105,14 @@ function enableRating() {
 
   saveButton.addEventListener("click", () => {
     const rating = ratingSlider.value;
-    const loggedInUser = localStorage.getItem("username");
+    const username = localStorage.getItem("username");
 
     fetch("/api/dailyChallenge/rateDrawing", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
         username: selectedUsername,
-        rater: loggedInUser,
+        rater: username,
         rating: rating,
       }),
     })
@@ -123,6 +129,8 @@ function enableRating() {
   });
 
   cancelButton.addEventListener("click", () => {
+    document.getElementById("rating-slider").value = 0;
+    document.getElementById("slider-value").innerHTML = 0;
     popup.style.display = "none";
     overlay.style.display = "none";
   });

@@ -14,7 +14,7 @@
   gap: 1%;
 }
 
-canvas {
+#drawingCanvas {
   display: block;
   margin: 20px auto;
   width: 1067px;

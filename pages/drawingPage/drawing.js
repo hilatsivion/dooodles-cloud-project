@@ -146,6 +146,12 @@ document.addEventListener("DOMContentLoaded", () => {
     const idToken = sessionStorage.getItem("idToken");
     const challengeId = sessionStorage.getItem("dailyChallengeId");
 
+    confetti({
+      particleCount: 100,
+      spread: 70,
+      origin: { y: 0.6 },
+    });
+
     // Validate required data
     if (!idToken || !challengeId) {
       alert("User is not authenticated or challenge ID is missing.");
