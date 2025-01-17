@@ -106,9 +106,11 @@
   justify-content: space-between;
 }
 
-.popup-btn {
-  width: 45%;
+.popup-content .popup-btn {
+  margin: auto;
+  margin-top: 1rem;
 }
+
 .btn-full.popup-btn {
   background-color: var(--green);
 }

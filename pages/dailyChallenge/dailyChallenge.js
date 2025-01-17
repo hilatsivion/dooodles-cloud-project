@@ -5,8 +5,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
   const challengeNameElement = document.getElementById("challenge-name");
   const drawingGallery = document.querySelector(".drawing-gallery");
-  const username = sessionStorage.getItem("username"); // Check if user is logged in
-  const isLoggedIn = !!username; // Convert to boolean
+  const idToken = sessionStorage.getItem("idToken"); // Use idToken for authentication
+  const username = sessionStorage.getItem("username"); // Get logged-in username
+  const isLoggedIn = !!idToken; // Check login status
 
   // Set the daily challenge title from sessionStorage
   const storedChallengeName =
@@ -46,8 +47,8 @@ document.addEventListener("DOMContentLoaded", () => {
           }" class="drawing-img" />
             <div class="flex-space">
               <div class="username">${participant.Username || "Anonymous"}</div>
-              <button class="rate-btn" data-username="${
-                participant.Username
+              <button class="rate-btn" data-doodle-id="${
+                participant.DoodleId
               }" ${
             isDisabled
               ? 'disabled style="background-color: #B9B2B0; cursor: not-allowed;"'
@@ -93,13 +94,13 @@ function enableRating() {
   const sliderValue = document.getElementById("slider-value");
   const saveButton = document.getElementById("save-btn");
   const cancelButton = document.getElementById("cancel-btn");
-  const username = sessionStorage.getItem("username");
-  let selectedUsername = "";
+  const idToken = sessionStorage.getItem("idToken");
+  let selectedDoodleId = "";
 
   rateButtons.forEach((button) => {
-    if (!button.disabled && username) {
+    if (!button.disabled && idToken) {
       button.addEventListener("click", () => {
-        selectedUsername = button.getAttribute("data-username");
+        selectedDoodleId = button.getAttribute("data-doodle-id");
         popupImg.src = button
           .closest(".drawing-card")
           .querySelector(".drawing-img").src;
@@ -114,22 +115,47 @@ function enableRating() {
   });
 
   saveButton.addEventListener("click", () => {
-    const rating = ratingSlider.value;
+    const score = parseInt(ratingSlider.value); // Ensure the score is an integer
+    showLoader();
 
-    fetch("/api/dailyChallenge/rateDrawing", {
+    fetch(`${API_BASE_URL}/Doodles/Score`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
-        username: selectedUsername,
-        rater: username,
-        rating: rating,
+        token: idToken, // Authentication token
+        doodleId: selectedDoodleId, // Doodle ID
+        score: score, // Rating score
       }),
     })
       .then((response) => response.json())
-      .then(() => {
-        popup.style.display = "none";
-        overlay.style.display = "none";
-        location.reload(); // Refresh to update the rated state
+      .then((data) => {
+        hideLoader();
+        console.log("Parsed Response Body:", data); // Debugging output
+        document.getElementById("rating-slider").value = 1;
+        document.getElementById("slider-value").innerHTML = 1;
+
+        // Check if the 'error' exists in the response
+        let responseBody;
+        try {
+          responseBody =
+            typeof data.body === "string" ? JSON.parse(data.body) : data.body;
+        } catch (e) {
+          console.error("Failed to parse body:", e);
+          responseBody = {};
+        }
+
+        // Check for the specific error message
+        if (responseBody.error === "You have already scored this doodle") {
+          popup.style.display = "none";
+          overlay.style.display = "none";
+          showPopupScored(); // Show the popup if already rated
+        } else if (data.statusCode === 400) {
+          alert(`Error: ${responseBody.error || "Failed to submit rating."}`);
+        } else {
+          console.log("Rating submitted successfully:", responseBody);
+          popup.style.display = "none";
+          overlay.style.display = "none";
+        }
       })
       .catch((err) => {
         console.error("Error submitting rating:", err);
@@ -140,6 +166,26 @@ function enableRating() {
   cancelButton.addEventListener("click", () => {
     document.getElementById("rating-slider").value = 1;
     document.getElementById("slider-value").innerHTML = 1;
+    popup.style.display = "none";
+    overlay.style.display = "none";
+  });
+
+  overlay.addEventListener("click", () => {
+    popup.style.display = "none";
+    overlay.style.display = "none";
+  });
+}
+
+// Show Success Popup
+function showPopupScored() {
+  const popup = document.getElementById("popup-scored");
+  const overlay = document.getElementById("overlay");
+  const cancelButton = document.getElementById("cancel-btn-0");
+
+  popup.style.display = "flex";
+  overlay.style.display = "block";
+
+  cancelButton.addEventListener("click", () => {
     popup.style.display = "none";
     overlay.style.display = "none";
   });
