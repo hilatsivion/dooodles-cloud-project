@@ -13,6 +13,8 @@ document.addEventListener("DOMContentLoaded", () => {
   const storedChallengeName =
     sessionStorage.getItem("dailyChallengeTitle") || "Current Challenge";
   challengeNameElement.textContent = storedChallengeName;
+  document.getElementById("popup-challenge-title").innerHTML =
+    storedChallengeName;
 
   // Fetch all drawings for the current challenge
   fetch(`${API_BASE_URL}/Challenge/Today`)

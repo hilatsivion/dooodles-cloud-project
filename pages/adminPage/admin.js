@@ -1,11 +1,11 @@
 import { API_BASE_URL } from "../../public/utils.js";
+const idToken = sessionStorage.getItem("idToken");
 let users = [];
-let currentEditingRow = null; // Track the currently editing row
+let userToDelete = null; // Track the user selected for deletion
 
-// load all users to the table
+// Load all users to the table
 function loadUsers() {
   showLoader();
-  const idToken = sessionStorage.getItem("idToken");
 
   fetch(`${API_BASE_URL}/AllUsers?idToken=${idToken}`)
     .then((response) => response.json())
@@ -27,14 +27,15 @@ function loadUsers() {
             <td>${user.Birthdate || "N/A"}</td>
             <td>${user.TotalScore || 0}</td>
             <td>${user.Doodles ? user.Doodles.length : 0}</td>
-            <td><button class="edit-btn">Edit</button></td>
+            <td><button class="remove-btn">Remove</button></td>
           `;
 
           tbody.appendChild(row);
 
-          // Add event listener for the Edit button
-          row.querySelector(".edit-btn").addEventListener("click", () => {
-            editRow(index);
+          // Add event listener for the Remove button
+          row.querySelector(".remove-btn").addEventListener("click", () => {
+            userToDelete = user; // Set the user to be deleted
+            showDeletePopup();
           });
         });
       } else {
@@ -50,102 +51,57 @@ function loadUsers() {
     });
 }
 
-// after click on "edit", the row will become editable
-function editRow(index) {
-  if (currentEditingRow !== null && currentEditingRow !== index) {
-    // Cancel previous edit if another row is being edited
-    const previousRow = document.querySelectorAll("#userTable tbody tr")[
-      currentEditingRow
-    ];
-    const prevUsername = users[currentEditingRow].username;
-    const prevBirthdate = users[currentEditingRow].birthdate;
-    previousRow.cells[1].innerText = prevUsername;
-    previousRow.cells[2].innerText = prevBirthdate;
-    previousRow.cells[5].innerHTML = `<button class="edit-btn" onclick="editRow(${currentEditingRow})">Edit</button>`;
-  }
-
-  currentEditingRow = index; // Set the current editing row
-
-  const row = document.querySelectorAll("#userTable tbody tr")[index];
-  const usernameCell = row.cells[1];
-  const birthdateCell = row.cells[2];
-
-  const originalUsername = usernameCell.innerText;
-  const originalBirthdate = birthdateCell.innerText;
-
-  usernameCell.innerHTML = `<input type="text" value="${originalUsername}" id="usernameInput${index}">`;
-  birthdateCell.innerHTML = `<input type="date" value="${originalBirthdate}" id="birthdateInput${index}">`;
-
-  row.cells[5].innerHTML = `
-      <button class="save-btn" onclick="saveChanges(${index})">Save</button>
-      <button class="cancel-btn" onclick="cancelChanges(${index}, '${originalUsername}', '${originalBirthdate}')">Cancel</button>
-    `;
-}
-
-// save the user changes the admin have done
-function saveChanges(index) {
-  showLoader();
-  const updatedUsername = document
-    .getElementById(`usernameInput${index}`)
-    .value.trim();
-  const updatedBirthdate = document.getElementById(
-    `birthdateInput${index}`
-  ).value;
-
-  const updatedUser = {
-    email: users[index].email,
-    username: updatedUsername,
-    birthdate: updatedBirthdate,
-  };
-
-  // send data to server
-  fetch("/api/admin/updateUser", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(updatedUser),
-  })
-    .then((response) => response.json())
-    .then(() => {
-      showPopup();
-      users[index].username = updatedUsername;
-      users[index].birthdate = updatedBirthdate;
-      currentEditingRow = null;
-      loadUsers();
-    })
-    .catch((err) => {
-      console.error("Error updating user:", err);
-      alert("Failed to update user. Please try again.");
-      hideLoader();
-    });
-}
-
-// cancel all changes in a row and not save.
-function cancelChanges(index, originalUsername, originalBirthdate) {
-  const row = document.querySelectorAll("#userTable tbody tr")[index];
-  row.cells[1].innerText = originalUsername;
-  row.cells[2].innerText = originalBirthdate;
-  row.cells[5].innerHTML = `<button class="edit-btn" onclick="editRow(${index})">Edit</button>`;
-  currentEditingRow = null;
-}
-
-// show the popup on save successfully
-function showPopup() {
-  const popup = document.getElementById("popup");
+// Show the confirmation popup for user deletion
+function showDeletePopup() {
+  const popup = document.getElementById("delete-popup");
   const overlay = document.getElementById("overlay");
-  const cancelButton = document.getElementById("cancel-btn");
-
   popup.style.display = "flex";
   overlay.style.display = "block";
 
-  cancelButton.addEventListener("click", () => {
-    popup.style.display = "none";
-    overlay.style.display = "none";
-  });
+  const confirmButton = document.getElementById("delete-btn");
+  const cancelButton = document.getElementById("cancel-btn-0");
 
-  overlay.addEventListener("click", () => {
+  // Confirm deletion
+  confirmButton.onclick = () => {
+    if (userToDelete) {
+      deleteUser(userToDelete.Email);
+      popup.style.display = "none";
+      overlay.style.display = "none";
+    }
+  };
+
+  // Cancel deletion
+  cancelButton.onclick = () => {
     popup.style.display = "none";
     overlay.style.display = "none";
-  });
+    userToDelete = null;
+  };
+}
+
+// Delete user function
+function deleteUser(email) {
+  showLoader();
+
+  fetch(`${API_BASE_URL}/DeleteUser`, {
+    method: "DELETE",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ email }),
+  })
+    .then((response) => {
+      if (!response.ok) throw new Error("Failed to delete user.");
+      return response.json();
+    })
+    .then(() => {
+      alert("User deleted successfully.");
+      loadUsers();
+    })
+    .catch((err) => {
+      console.error("Error deleting user:", err);
+      alert("Failed to delete user. Please try again.");
+    })
+    .finally(() => {
+      hideLoader();
+    });
 }
 
 window.onload = loadUsers;
