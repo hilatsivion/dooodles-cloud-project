@@ -100,3 +100,7 @@
   border-radius: 0 0 16px 16px;
   text-align: center;
 }
+
+.info-card :nth-child(2) {
+  color: var(--primary);
+}
