@@ -1,6 +1,7 @@
 import { API_BASE_URL } from "../../public/utils.js";
 const idToken = sessionStorage.getItem("idToken");
 var alreadyPlay;
+showLoader();
 
 // get true if user alrady palyed in this challenge, false otherwise
 fetch(`${API_BASE_URL}/User/ParticipatedInChallenge`, {
@@ -24,6 +25,9 @@ fetch(`${API_BASE_URL}/User/ParticipatedInChallenge`, {
   .catch((err) => {
     console.error("Error checking participation:", err);
     alert("Failed to check participation. Please try again.");
+  })
+  .finally(() => {
+    hideLoader();
   });
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -149,6 +153,7 @@ document.addEventListener("DOMContentLoaded", () => {
       }
     } else if (currentBrush === "dots") {
       ctx.fillStyle = color;
+
       const dotInterval = brushSize * 2;
       const currentTime = Date.now();
 
@@ -161,13 +166,20 @@ document.addEventListener("DOMContentLoaded", () => {
         lastX = x;
         lastY = y;
       }
-    } else {
+    } else if (currentBrush === "line") {
       ctx.strokeStyle = color;
       if (lastX !== null && lastY !== null) {
         ctx.beginPath();
         ctx.moveTo(lastX, lastY);
         ctx.lineTo(x, y);
         ctx.stroke();
+      }
+    } else if (currentBrush === "spray") {
+      ctx.fillStyle = color;
+      for (let i = 0; i < 10; i++) {
+        const offsetX = Math.random() * brushSize - brushSize / 2;
+        const offsetY = Math.random() * brushSize - brushSize / 2;
+        ctx.fillRect(x + offsetX, y + offsetY, 1, 1);
       }
     }
 
