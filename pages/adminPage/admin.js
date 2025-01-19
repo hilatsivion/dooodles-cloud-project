@@ -25,7 +25,7 @@ function loadUsers() {
             <td>${user.Email}</td>
             <td>${user.Username}</td>
             <td>${user.Birthdate || "N/A"}</td>
-            <td>${user.TotalScore || 0}</td>
+            <td>${user.TotalScore.toFixed(2) || 0}</td>
             <td>${user.Doodles ? user.Doodles.length : 0}</td>
             <td><button class="remove-btn">Remove</button></td>
           `;
