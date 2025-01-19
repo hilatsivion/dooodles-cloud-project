@@ -82,10 +82,8 @@ function showDeletePopup() {
 function deleteUser(email) {
   showLoader();
 
-  fetch(`${API_BASE_URL}/DeleteUser`, {
+  fetch(`${API_BASE_URL}/DeleteUser?Email=${encodeURIComponent(email)}`, {
     method: "DELETE",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ email }),
   })
     .then((response) => {
       if (!response.ok) throw new Error("Failed to delete user.");
