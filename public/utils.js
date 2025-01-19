@@ -12,21 +12,18 @@ function isNewDay() {
 }
 
 function login() {
-  // const loginUrl = `https://us-east-1qiuvxugwi.auth.us-east-1.amazoncognito.com/login?client_id=7m59qe2baupre61mo36mbbvi5q&response_type=token&scope=aws.cognito.signin.user.admin+email+openid+profile&redirect_uri=https%3A%2F%2Fdoodles-website-bucket.s3.us-east-1.amazonaws.com%2Fpages%2FhomePage%2Findex.html`;
-  const loginUrl = `https://us-east-1qiuvxugwi.auth.us-east-1.amazoncognito.com/login?client_id=7m59qe2baupre61mo36mbbvi5q&response_type=token&scope=aws.cognito.signin.user.admin+email+openid+profile&redirect_uri=http://localhost:5500/pages/homePage/index.html`;
+  const loginUrl = `https://us-east-1qiuvxugwi.auth.us-east-1.amazoncognito.com/login?client_id=7m59qe2baupre61mo36mbbvi5q&response_type=token&scope=aws.cognito.signin.user.admin+email+openid+profile&redirect_uri=https%3A%2F%2Fdoodles-website-bucket.s3.us-east-1.amazonaws.com%2Fpages%2FhomePage%2Findex.html`;
   window.location.href = loginUrl;
 }
 
 function signup() {
-  // const signupUrl = `https://us-east-1qiuvxugwi.auth.us-east-1.amazoncognito.com/signup?client_id=7m59qe2baupre61mo36mbbvi5q&redirect_uri=https%3A%2F%2Fdoodles-website-bucket.s3.us-east-1.amazonaws.com%2Fpages%2FhomePage%2Findex.html&response_type=token&scope=aws.cognito.signin.user.admin+email+openid+profile`;
-  const signupUrl = `https://us-east-1qiuvxugwi.auth.us-east-1.amazoncognito.com/signup?client_id=7m59qe2baupre61mo36mbbvi5q&redirect_uri=http://localhost:5500/pages/homePage/index.html&response_type=token&scope=aws.cognito.signin.user.admin+email+openid+profile`;
+  const signupUrl = `https://us-east-1qiuvxugwi.auth.us-east-1.amazoncognito.com/signup?client_id=7m59qe2baupre61mo36mbbvi5q&redirect_uri=https%3A%2F%2Fdoodles-website-bucket.s3.us-east-1.amazonaws.com%2Fpages%2FhomePage%2Findex.html&response_type=token&scope=aws.cognito.signin.user.admin+email+openid+profile`;
   window.location.href = signupUrl;
 }
 
 function logout() {
   clearTokens();
-  // const logoutUrl = `https://doodles-website-bucket.s3.us-east-1.amazonaws.com/pages/homePage/index.html`;
-  const logoutUrl = "//localhost:5500/pages/homePage/index.html";
+  const logoutUrl = `https://doodles-website-bucket.s3.us-east-1.amazonaws.com/pages/homePage/index.html`;
   window.location.href = logoutUrl;
   setTimeout(() => {
     location.reload();
